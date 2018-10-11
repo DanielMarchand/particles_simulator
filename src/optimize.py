@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.polynomial.polynomial import polyval2d
 import scipy.optimize
 
 import matplotlib
@@ -10,10 +11,24 @@ from matplotlib import cm
 
 import sys
 
+#def ex_function(xy):
+#    x = np.array(xy[0])
+#    y = np.array(xy[1])
+#    S_xy = 2.*x**2. + (3./2.)*y**2. +x*y - x - 2.*y + 6.
+#    return S_xy
+
+def get_Sxy_coeff():
+    coeffs = np.array([[6 , -2, 1.5],
+                       [-1, 1 , 0],
+                       [2 , 0 , 0]])
+    return coeffs
+
 def ex_function(xy):
     x = np.array(xy[0])
     y = np.array(xy[1])
-    S_xy = 2.*x**2. + (3./2.)*y**2. +x*y - x - 2.*y + 6.
+    #S_xy = 2.*x**2. + (3./2.)*y**2. +x*y - x - 2.*y + 6.
+    coeffs = get_Sxy_coeff()
+    S_xy = polyval2d(x,y, coeffs)
     return S_xy
 
 def callback(*args, **kwargs):
@@ -24,11 +39,11 @@ def callback(*args, **kwargs):
 
 def optimize_function(func, start, **kwargs):
     global xyz
-    xyz=[]
-    scipy.optimize.minimize(ex_function,
-                        np.array(start),
-                        tol=1e-9,
-                        callback=callback, **kwargs)
+    xyz = []
+    scipy.optimize.minimize(func,
+                            np.array(start),
+                            tol=1e-9,
+                            callback=callback, **kwargs)
     return xyz
 
 def gen_surface_plot(func, ax):
@@ -36,7 +51,6 @@ def gen_surface_plot(func, ax):
     X, Y = np.meshgrid(x, y)
     zs = np.array([ex_function([x,y]) for x,y in zip(np.ravel(X), np.ravel(Y))])
     Z = zs.reshape(X.shape)
-
     ax.plot_surface(X, Y, Z,  cmap=cm.viridis, shade=False, alpha=0.45)#cmap=cm.viridis)
     ax.contour(X,Y,Z, colors='k')
     return ax
@@ -58,8 +72,8 @@ if __name__ == "__main__":
   ax = fig.add_subplot(111, projection='3d')
 
   ax = gen_surface_plot(ex_function, ax)
-  start_position = [5,5]
 
+  start_position = [5,5]
 
   method="BFGS"
   xyz = optimize_function(ex_function, start_position, method=method)
