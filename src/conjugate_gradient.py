@@ -29,8 +29,8 @@ def conjugate__gradient(coeff, x0, tol, max_iter):
                   [coeff[1, 1]/2, coeff[0, 2]/1]])
     b = np.array([-coeff[1, 0], -coeff[0, 1]])
     c = coeff[0, 0]
-
-    r_old = b - np.einsum('ij,j->i', A, x0)
+    A2 = 2 * A;
+    r_old = b - np.einsum('ij,j->i', A2, x0)
     p = r_old
     x = x0
     ret_arr = np.append(x0, ex_func_quad(A, b, c, x0)).T
@@ -38,9 +38,9 @@ def conjugate__gradient(coeff, x0, tol, max_iter):
     iter = 0
 
     while True:
-        alpha = (norm_cal(r_old) / weighted_norm_cal(p, A))
+        alpha = (norm_cal(r_old) / weighted_norm_cal(p, A2))
         x = x + alpha * p
-        r_new = r_old - alpha * np.einsum('ij,j->i', A, p)
+        r_new = r_old - alpha * np.einsum('ij,j->i', A2, p)
         r_norm = np.sqrt(norm_cal(r_new))
         if r_norm < tol or iter > max_iter:
             ret_arr = ret_val_creator(ret_arr, A, b, c, x)

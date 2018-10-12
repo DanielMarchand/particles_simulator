@@ -5,6 +5,10 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 from  _conjugate_gradient import conjugate__gradient
 
+import numpy as np
+from numpy.polynomial.polynomial import polyval2d
+import scipy.optimize
+
 
 import sys
 
@@ -15,6 +19,9 @@ import sys
 #    return S_xy
 
 def get_Sxy_coeff():
+    coeffs = np.array([[6 , -2, 1.5],
+                       [-1, 1 , 0],
+                       [2 , 0 , 0]])
     coeffs = np.array([[6 , -2, 1.5],
                        [-1, 1 , 0],
                        [2 , 0 , 0]])
@@ -60,11 +67,7 @@ def gen_3D_plot(xyz, ax, **kwargs):
     ax.plot3D(x, y, z, **kwargs)
     return ax
 
-import numpy as np
-from numpy.polynomial.polynomial import polyval2d
-import scipy.optimize
-import conjugate_gradient
-import optimize
+
 
 if __name__ == "__main__":
   if len(sys.argv) != 2:
@@ -83,21 +86,18 @@ if __name__ == "__main__":
   method="BFGS"
   xyz = optimize_function(ex_function, start_position, method=method)
   xyz.insert(0,[start_position[0], start_position[1], ex_function(start_position)])
-  print(xyz[-1])
   ax = gen_3D_plot(xyz, ax,
-                   linestyle='--', c='r', marker='o', mfc='none', label=method)
+                   linestyle='--', c='r', marker='o', mfc='none', label=method+' [scipy]')
 
   method="CG"
   xyz = optimize_function(ex_function, start_position, method=method)
   xyz.insert(0,[start_position[0], start_position[1], ex_function(start_position)])
-  print(xyz[-1])
   ax = gen_3D_plot(xyz, ax,
-                   linestyle='--', c='b', marker='o', mfc='none', label=method)
+                   linestyle='--', c='b', marker='o', mfc='none', label=method+' [scipy]')
 
-  xyz = conjugate__gradient(get_Sxy_coeff(), start_position, 1e-20, 10)
-  print(xyz[-1,:])
+  xyz = conjugate__gradient(get_Sxy_coeff(), start_position, 1e-9, 10)
   ax = gen_3D_plot(xyz, ax,
-                   linestyle='-', c='y', marker='x', mfc='none', label = 'self_coded')
+                   linestyle='-', c='y', marker='x', mfc='none', label = 'CG [user]')
 
   ax.set_xlabel('X')
   ax.set_ylabel('Y')
@@ -105,4 +105,4 @@ if __name__ == "__main__":
   ax.grid(b=False)
 
   plt.legend()
-  plt.savefig(output_file)
+  plt.savefig(output_file, dpi=800)
