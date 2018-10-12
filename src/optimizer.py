@@ -3,7 +3,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
-from  _conjugate_gradient import conjugate__gradient
+from  conjugate_gradient import conjugate__gradient
 
 import numpy as np
 from numpy.polynomial.polynomial import polyval2d
