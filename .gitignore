@@ -1,0 +1,6 @@
+*.ipynb
+/src/__pycache__/
+*.pyc
+*.py~
+*.png
+*.*~

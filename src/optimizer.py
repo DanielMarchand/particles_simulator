@@ -1,12 +1,13 @@
-import numpy as np
-from numpy.polynomial.polynomial import polyval2d
-import scipy.optimize
-
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
+from  conjugate_gradient import conjugate__gradient
+
+import numpy as np
+from numpy.polynomial.polynomial import polyval2d
+import scipy.optimize
 
 
 import sys
@@ -18,6 +19,9 @@ import sys
 #    return S_xy
 
 def get_Sxy_coeff():
+    coeffs = np.array([[6 , -2, 1.5],
+                       [-1, 1 , 0],
+                       [2 , 0 , 0]])
     coeffs = np.array([[6 , -2, 1.5],
                        [-1, 1 , 0],
                        [2 , 0 , 0]])
@@ -51,7 +55,8 @@ def gen_surface_plot(func, ax):
     X, Y = np.meshgrid(x, y)
     zs = np.array([ex_function([x,y]) for x,y in zip(np.ravel(X), np.ravel(Y))])
     Z = zs.reshape(X.shape)
-    ax.plot_surface(X, Y, Z,  cmap=cm.viridis, shade=False, alpha=0.45)#cmap=cm.viridis)
+    ax.plot_surface(X, Y, Z,  cmap=cm.viridis, shade=False,
+                    alpha=0.45)#cmap=cm.viridis)
     ax.contour(X,Y,Z, colors='k')
     return ax
 
@@ -62,11 +67,14 @@ def gen_3D_plot(xyz, ax, **kwargs):
     ax.plot3D(x, y, z, **kwargs)
     return ax
 
+
+
 if __name__ == "__main__":
   if len(sys.argv) != 2:
     sys.exit("optimize.py <output file path>")
 
-  output_file = str(sys.argv[1])
+  output_file  = str(sys.argv[1])
+#  output_file2 = str(sys.argv[1])
 
   fig = plt.figure()
   ax = fig.add_subplot(111, projection='3d')
@@ -79,14 +87,17 @@ if __name__ == "__main__":
   xyz = optimize_function(ex_function, start_position, method=method)
   xyz.insert(0,[start_position[0], start_position[1], ex_function(start_position)])
   ax = gen_3D_plot(xyz, ax,
-                   linestyle='--', c='r', marker='o', mfc='none', label=method)
+                   linestyle='--', c='r', marker='o', mfc='none', label=method+' [scipy]')
 
   method="CG"
   xyz = optimize_function(ex_function, start_position, method=method)
   xyz.insert(0,[start_position[0], start_position[1], ex_function(start_position)])
   ax = gen_3D_plot(xyz, ax,
-                   linestyle='--', c='b', marker='o', mfc='none', label=method)
+                   linestyle='--', c='b', marker='o', mfc='none', label=method+' [scipy]')
 
+  xyz = conjugate__gradient(get_Sxy_coeff(), start_position, 1e-9, 10)
+  ax = gen_3D_plot(xyz, ax,
+                   linestyle='-', c='y', marker='x', mfc='none', label = 'CG [user]')
 
   ax.set_xlabel('X')
   ax.set_ylabel('Y')
@@ -94,4 +105,4 @@ if __name__ == "__main__":
   ax.grid(b=False)
 
   plt.legend()
-  plt.savefig(output_file)
+  plt.savefig(output_file, dpi=800)

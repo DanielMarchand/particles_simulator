@@ -1,0 +1,8 @@
+Ali Falsafi
+Daniel Marchand
+
+To run the output of the optimization script enter:
+
+ $python3 sp-e_hw/src/optimizer.py <output file path>.png
+
+A plot of the optimization for BFGS, CG with scipy  and a user-coded version of CG will be generated at <output file path>. 
