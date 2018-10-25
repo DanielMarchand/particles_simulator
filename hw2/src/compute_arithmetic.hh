@@ -7,7 +7,5 @@ class ComputeArithmetic : public Series {
   //Destructor
   ~ComputeArithmetic() = default;
 
-  double compute (Uint N) override ;
-
   double computeTerm (Uint K) override;
 }

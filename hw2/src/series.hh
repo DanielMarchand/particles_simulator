@@ -11,7 +11,7 @@ public:
   //Destructor
   ~Series() = default;
 
-  virtual double compute(Uint N) = 0;
+  virtual double compute(Uint N);
   virtual double getAnalyticPrediction();
   void addTerm();
   virtual double computeTerm(Uint k) = 0;
