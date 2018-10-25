@@ -7,9 +7,9 @@ using Uint = unsigned int;
 class Series{
 public:
   //Constructor
-  Series()=default;
+  Series() ;
   //Destructor
-  ~Series()=default;
+  ~Series() = default;
 
   virtual double compute(Uint N) = 0;
   virtual double getAnalyticPrediction();
@@ -17,7 +17,7 @@ public:
   virtual double computeTerm(Uint k) = 0;
 
 private:
-  int current_term {0};
-  double current_value {0.};
+  int current_term  ;
+  double current_value;
 
 };
