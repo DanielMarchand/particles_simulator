@@ -1,1 +1,5 @@
-add_executable(main main.cc)
+# Glob source files
+
+file(GLOB sources "*.cc")
+
+add_executable(main ${sources})

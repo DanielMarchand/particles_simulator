@@ -12,8 +12,8 @@ public:
   void dump() override;
 
 protected:
-  Uint maxiter;
-  Uint freq;
+  int maxiter;
+  int freq;
 };
 
 #endif /* PRINT_SERIES_H */

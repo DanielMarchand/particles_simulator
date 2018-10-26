@@ -3,17 +3,17 @@
 
 #ifndef SERIES_H
 #define SERIES_H
-using Uint = unsigned int;
+using Uint = long unsigned int;
 
 class Series{
 public:
   //Constructor
-  Series() ;
+  Series();
   //Destructor
   virtual ~Series() = default;
 
   void addTerm();
-  virtual double compute(Uint N);
+  virtual double compute(int N);
   virtual double getAnalyticPrediction();
   virtual double computeTerm(Uint k) = 0;
 
