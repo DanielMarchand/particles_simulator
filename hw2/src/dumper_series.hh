@@ -1,5 +1,6 @@
 #include "series.hh"
-
+#ifndef DUMPER_SERIES_H
+#define DUMPER_SERIES_H
 
 class DumperSeries {
 public:
@@ -18,3 +19,5 @@ protected:
   Uint precision;
 
 };
+
+#endif /* DUMPER_SERIES_H */

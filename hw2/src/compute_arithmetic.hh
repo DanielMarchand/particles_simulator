@@ -3,6 +3,7 @@
 #ifndef COMPUTE_ARITHMETIC_H
 #define COMPUTE_ARITHMETIC_H
 class ComputeArithmetic : public Series {
+public:
   //Constructor
   ComputeArithmetic() ;
   //Destructor
