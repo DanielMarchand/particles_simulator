@@ -1,7 +1,8 @@
 #include <iostream>
 
 
-
+#ifndef SERIES_H
+#define SERIES_H
 using Uint = unsigned int;
 
 class Series{
@@ -9,15 +10,17 @@ public:
   //Constructor
   Series() ;
   //Destructor
-  ~Series() = default;
+  virtual ~Series() = default;
 
+  void addTerm();
   virtual double compute(Uint N);
   virtual double getAnalyticPrediction();
-  void addTerm();
   virtual double computeTerm(Uint k) = 0;
 
-private:
+protected:
   int current_term  ;
   double current_value;
 
 };
+
+#endif /* SERIES_H */
