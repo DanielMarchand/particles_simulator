@@ -7,9 +7,17 @@
 
 int main(int argc, char *argv[])
 {
-  ComputeArithmetic &my_arithmetic=ComputeArithmetic();
-  Uint a = 1000;
-  Uint b = 100;
-  PrintSeries my_printseries(my_arithmetic, a, b);
+  ComputeArithmetic my_arithmetic = ComputeArithmetic();
+  ComputePi my_pi = ComputePi();
+  int maxiter_inp = 670000000;
+  int freq_inp = 100000;
+  PrintSeries my_printseries(my_arithmetic,
+                             maxiter_inp,
+                             freq_inp);
+
+  PrintSeries my_printseries_pi(my_pi,
+                                maxiter_inp,
+                                freq_inp);
+  my_printseries_pi.dump();
   return 0;
 }

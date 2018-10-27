@@ -1,4 +1,5 @@
 #include "series.hh"
+#include <math.h>
 
 #ifndef COMPUTE_ARITHMETIC_H
 #define COMPUTE_ARITHMETIC_H
@@ -7,7 +8,7 @@ public:
   //Constructor
   ComputeArithmetic() ;
   //Destructor
-  ~ComputeArithmetic() = default;
+  virtual ~ComputeArithmetic() = default;
 
   double computeTerm (Uint K) override;
 };
