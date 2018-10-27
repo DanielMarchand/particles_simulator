@@ -1,6 +1,7 @@
 #include "write_series.hh"
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 
@@ -20,11 +21,12 @@ void WriteSeries::dump() {
   double res = 0;
   double res2 = 0;
   std::ofstream out_file("toto.txt");
-  std::cout<<"TODO: add in precision"<<std::endl;
   for (int i{1}; i < N; ++i) {
     res = this->series.compute(i * this->freq-1);
     res2 = this->series.compute(i * this->freq);
-    out_file << i*this->freq <<"    "<< res <<"    "<< res2-res <<std::endl;
+    out_file
+    << std::scientific << std::setprecision(this->precision)
+    << i*this->freq <<"    "<< res <<"    "<< res2-res <<std::endl;
   }
   out_file.close();
 
