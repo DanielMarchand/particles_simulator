@@ -9,7 +9,7 @@ public:
   // Destructor
   virtual ~PrintSeries() = default;
 
-  void dump() override;
+  void dump(std::ostream & os = std::cout) override;
 
 protected:
   int maxiter;

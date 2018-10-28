@@ -2,20 +2,17 @@
 #include <math.h>
 
 ComputePi::ComputePi():
-  Series()
-{}
+  Series(){
+  std::cout <<"Compute Pi object constructed"<<std::endl;
+}
 /*---------------------------------------------------------------*/
 double ComputePi::compute (int N)  {
   Series::compute(N);
-  //std::cout<<"current:"<<this->current_value<<std::endl;
-  //std::cout<<"Pi:"<<sqrt(6.*this->current_value)<<std::endl;
   return sqrt(6.*this->current_value);
 }
 
 /*---------------------------------------------------------------*/
 double ComputePi::computeTerm (Uint K) {
-  //std::cout<<"K:"<<K<<std::endl;
-  //std::cout<<"1/(K*K):"<<1.0 / (K*K)<<std::endl;
   return 1.0 / (K*K);
 
 }
