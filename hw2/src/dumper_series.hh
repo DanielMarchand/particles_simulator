@@ -13,6 +13,7 @@ public:
   // overwriting the dump method
   virtual void dump(std::ostream & os) = 0;
 
+
   void setPrecision(Uint new_precision);
 
 
@@ -21,6 +22,7 @@ public:
 protected:
   Series &series;
   Uint precision;
+
 
 };
 

@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 PrintSeries::PrintSeries(Series &series_inp, Uint maxiter_inp, Uint freq_inp):
   DumperSeries(series_inp)
@@ -25,7 +26,12 @@ void PrintSeries::dump(std::ostream & os){
     res2 = this->series.compute(i * this->freq);
     os.setf(std::ios::scientific);
     os.precision(this->precision);
-    os << i * this->freq <<"    "<< res <<"    "<< res2-res <<std::endl ;
+
+    os << i * this->freq <<"    "<< res <<"    "<< res2-res;
+    if ( ! std::isnan(this->series.getAnalyticPrediction()) ) {
+      os <<"   " <<this->series.getAnalyticPrediction();
+    }
+    os << std::endl;
   }
   os << std::endl<<std::endl;
 
