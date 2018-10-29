@@ -6,10 +6,15 @@ except ModuleNotFoundError:
     raise ModuleNotFoundError("This script require pandas to work")
 import sys
 
-if len(sys.argv) != 2:
-  sys.exit("plot_results.py <file_to_plot>")
+output_file = False
+if len(sys.argv) == 2:
+  pass
+elif len(sys.argv) == 3:
+  output_file = sys.argv[2]
+else:
+  sys.exit("plot_results.py <file_to_plot> <output_file OPTIONAL>")
 
-def plot_results(my_df):
+def plot_results(my_df, output_file):
     fig = plt.figure()
     axe = fig.add_subplot(1, 1, 1)
 
@@ -25,7 +30,10 @@ def plot_results(my_df):
     axe.set_xlabel(r'$k$')
     axe.set_ylabel(r'Series')
     axe.legend()
-    plt.show()
+    if output_file:
+        plt.savefig(output_file)
+    else:
+        plt.show()
 
 filename = sys.argv[1]
 file_ending=filename.split('.')[-1]
@@ -50,4 +58,4 @@ else:
 my_df.columns = columns
 
 
-plot_results(my_df)
+plt = plot_results(my_df, output_file)
