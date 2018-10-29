@@ -12,7 +12,7 @@ void DumperSeries::setPrecision(Uint new_precision){
 }
 
 /*-----------------------------------------------------*/
-void DumperSeries::set_seperator(std::string seperator){
+void DumperSeries::setSeperator(std::string seperator){
     if(seperator == ","){
       this->seperator = seperator;
       //this->file_ending = ".csv";
