@@ -36,3 +36,6 @@ input_file: the input file to be plotted, only txt, csv and psv supported
 output_file: the path to an output file containing a plot of the data, 
              if left unspecified, plots results to screen
            
+The "Naive" Algorithm for calculation of the sereis would have N*N complexity. However,
+The finally algorithm which uses the members current_values & current_index helps us to enjoy complexity of order N.
+In the case of summing up the terms reversely, the complexity is not effected merely the order of the operations
