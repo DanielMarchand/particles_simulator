@@ -17,14 +17,14 @@ void PrintSeries::dump(std::ostream & os){
   int N = (int) (this->maxiter / this->freq);
   double res = 0;
   double res2 = 0;
+  os << std::endl<<std::endl;
   for (int i{1}; i < N; ++i) {
     res = this->series.compute(i * this->freq-1);
     res2 = this->series.compute(i * this->freq);
-
-    os << os.precision(this->precision)<<
-        i*this->freq <<"    "<< res <<"    "<< res2-res <<std::endl ;
-
+    os.precision(this->precision);
+    os << i * this->freq <<"    "<< res <<"    "<< res2-res <<std::endl ;
   }
+  os << std::endl<<std::endl;
 
 
 }

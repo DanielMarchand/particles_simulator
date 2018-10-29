@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
 {
   ComputeArithmetic my_arithmetic = ComputeArithmetic();
   ComputePi my_pi = ComputePi();
-  int maxiter_inp = 100000000;
-  int freq_inp = 10000000;
+  int maxiter_inp = 1000000;
+  int freq_inp = 100000;
 
   std::filebuf fb;
   fb.open ("test.txt",std::ios::out);
@@ -27,7 +27,10 @@ int main(int argc, char *argv[])
                                 freq_inp);
 
 
-  my_printseries_pi.setPrecision(9);
+  my_printseries_pi.setPrecision(3);
   my_printseries_pi.dump();
+
+  my_printseries.setPrecision(3);
+  my_printseries.dump();
   return 0;
 }
