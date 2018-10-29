@@ -19,13 +19,23 @@ std::ofstream ofstream_from_name(std::string filename){
 
 int main(int argc, char *argv[])
 {
+
+  std::string filename = "my_file.txt";
+  if(argc == 5){
+  }
+  else if (argc == 6){
+    std::string filename = argv[5];
+  } else {
+   std::cout << "Invalid number of arguments" << std::endl;
+   std::cerr << "main <series_type> <dumper_type> " <<
+   "<maxiter> <freq> <fileout_name OPTIONAL" << std::endl;
+  }
+
   std::string series_type = argv[1];
   std::string dumper_type = argv[2];
   int maxiter_inp = std::atoi(argv[3]);
   int freq_inp = std::atoi(argv[4]);
-  std::string filename = argv[5];
 
-  std::cout << "TODO: Use shared_unique ptr" << std::endl;
   std::unique_ptr <Series> my_series;
 
   if ( series_type == "pi" ){
