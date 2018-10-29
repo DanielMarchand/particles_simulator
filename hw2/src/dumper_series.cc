@@ -10,3 +10,22 @@ DumperSeries::DumperSeries(std::unique_ptr<Series>& series_inp):
 void DumperSeries::setPrecision(Uint new_precision){
   this->precision = new_precision ;
 }
+
+/*-----------------------------------------------------*/
+void DumperSeries::set_seperator(std::string seperator){
+    if(seperator == ","){
+      this->seperator = seperator;
+      //this->file_ending = ".csv";
+    }
+    else if(seperator == " "){
+      this->seperator = seperator;
+      //this->file_ending = ".txt";
+    }
+    else if(seperator == "|"){
+      this->seperator = seperator;
+      //this->file_ending = ".psv";
+    }
+    else {
+      std::cerr << "Invalid seperator: " << seperator << std::endl;
+    }
+}

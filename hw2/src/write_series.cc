@@ -14,24 +14,6 @@ WriteSeries::WriteSeries(std::unique_ptr<Series>& series_inp, Uint maxiter_inp, 
   std::cout <<"Write Series object constructed"<<std::endl;
 }
 
-/*-----------------------------------------------------*/
-void WriteSeries::set_seperator(std::string seperator){
-    if(seperator == ","){
-      this->seperator = seperator;
-      //this->file_ending = ".csv";
-    }
-    else if(seperator == " "){
-      this->seperator = seperator;
-      //this->file_ending = ".txt";
-    }
-    else if(seperator == "|"){
-      this->seperator = seperator;
-      //this->file_ending = ".psv";
-    }
-    else {
-      std::cerr << "Invalid seperator: " << seperator << std::endl;
-    }
-}
 
 void WriteSeries::dump(std::ostream & os) {
   std::string out = "";

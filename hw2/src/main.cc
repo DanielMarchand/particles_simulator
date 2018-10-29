@@ -20,11 +20,12 @@ std::ofstream ofstream_from_name(std::string filename){
 int main(int argc, char *argv[])
 {
 
-  std::string filename = "my_file.txt";
+  std::string filename;
+  filename = "my_file.txt";
   if(argc == 5){
   }
   else if (argc == 6){
-    std::string filename = argv[5];
+    filename = argv[5];
   } else {
    std::cout << "Invalid number of arguments" << std::endl;
    std::cerr << "main <series_type> <dumper_type> " <<
@@ -55,6 +56,21 @@ int main(int argc, char *argv[])
     my_dumper = std::make_unique<WriteSeries> (my_series,
                                                maxiter_inp,
                                                freq_inp);
+    // find out which seperator to use
+    std::string ext = filename.substr(filename.size()-3, 50);
+    if ( ext == "txt") {
+        my_dumper->set_seperator(" ");
+      }
+    else if ( ext == "csv" ){
+        my_dumper->set_seperator(",");
+      }
+    else if ( ext == "psv" ){
+        my_dumper->set_seperator("|");
+      }
+    else {
+      std::cerr << "Invalid file type: " << ext << std::endl;
+      }
+
     std::ofstream my_file(filename, std::ofstream::out);
     my_dumper->dump(my_file);
     my_file.close();

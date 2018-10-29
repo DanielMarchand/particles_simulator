@@ -10,12 +10,10 @@ public:
   virtual ~WriteSeries() = default;
 
   void dump(std::ostream & os = std::cout) override;
-  void set_seperator(std::string seperator);
 
 protected:
   int maxiter;
   int freq;
-  std::string seperator;
 };
 
 #endif /* WRITE_SERIES_H */
