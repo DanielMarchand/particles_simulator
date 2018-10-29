@@ -71,13 +71,13 @@ int main(int argc, char *argv[])
     // find out which seperator to use
     std::string ext = filename.substr(filename.size()-3, 50);
     if ( ext == "txt") {
-        my_dumper->set_seperator(" ");
+        my_dumper->setSeperator(" ");
       }
     else if ( ext == "csv" ){
-        my_dumper->set_seperator(",");
+        my_dumper->setSeperator(",");
       }
     else if ( ext == "psv" ){
-        my_dumper->set_seperator("|");
+        my_dumper->setSeperator("|");
       }
     else {
       std::cerr << "Invalid file type: " << ext << std::endl;

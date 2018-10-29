@@ -10,7 +10,7 @@ WriteSeries::WriteSeries(std::unique_ptr<Series>& series_inp, Uint maxiter_inp, 
 {
   this->maxiter = maxiter_inp;
   this->freq = freq_inp;
-  this->set_seperator(" ");
+  this->setSeperator(" ");
   std::cout <<"Write Series object constructed"<<std::endl;
 }
 
