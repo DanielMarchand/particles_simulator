@@ -3,7 +3,8 @@
 
 ComputeArithmetic::ComputeArithmetic():
   Series("The Artihemtic Series:"){
-  std::cout <<"Compute Arithmetic object constructed"<<std::endl;}
+  std::cout <<"Compute Arithmetic object constructed"<<std::endl;
+}
 
 /*---------------------------------------------------------------*/
 double ComputeArithmetic::computeTerm (Uint K) {
