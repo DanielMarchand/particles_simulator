@@ -9,9 +9,13 @@ public:
   // Destructor:
   virtual ~DumperSeries() = default ;
 
-  virtual void dump() = 0 ;
+
+  // overwriting the dump method
+  virtual void dump(std::ostream & os) = 0;
 
   void setPrecision(Uint new_precision);
+
+
 
   // TODO: overload print stream operator here
 protected:
@@ -20,4 +24,10 @@ protected:
 
 };
 
+
+inline std::ostream & operator << (std::ostream & stream,
+                                   DumperSeries & _this){
+  _this.dump(stream);
+  return stream;
+}
 #endif /* DUMPER_SERIES_H */
