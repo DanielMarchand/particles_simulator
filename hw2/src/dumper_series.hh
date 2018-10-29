@@ -14,7 +14,7 @@ public:
   // overwriting the dump method
   virtual void dump(std::ostream & os = std::cout) = 0;
 
-
+  void set_seperator(std::string seperator);
   void setPrecision(Uint new_precision);
 
 
@@ -24,6 +24,7 @@ protected:
   std::unique_ptr<Series>& series;
   //Series &series;
   Uint precision;
+  std::string seperator;
 
 
 };
