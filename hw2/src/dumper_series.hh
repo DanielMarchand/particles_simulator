@@ -1,17 +1,18 @@
 #include "series.hh"
+#include <memory>
 #ifndef DUMPER_SERIES_H
 #define DUMPER_SERIES_H
 
 class DumperSeries {
 public:
   // Constructor:
-  DumperSeries(Series &series_inp);
+  DumperSeries(std::unique_ptr<Series>& series_inp);
   // Destructor:
   virtual ~DumperSeries() = default ;
 
 
   // overwriting the dump method
-  virtual void dump(std::ostream & os) = 0;
+  virtual void dump(std::ostream & os = std::cout) = 0;
 
 
   void setPrecision(Uint new_precision);
@@ -20,7 +21,8 @@ public:
 
   // TODO: overload print stream operator here
 protected:
-  Series &series;
+  std::unique_ptr<Series>& series;
+  //Series &series;
   Uint precision;
 
 

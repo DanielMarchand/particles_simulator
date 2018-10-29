@@ -5,7 +5,7 @@
 #include <fstream>
 #include <cmath>
 
-WriteSeries::WriteSeries(Series &series_inp, Uint maxiter_inp, Uint freq_inp):
+WriteSeries::WriteSeries(std::unique_ptr<Series>& series_inp, Uint maxiter_inp, Uint freq_inp):
   DumperSeries(series_inp)
 {
   this->maxiter = maxiter_inp;
@@ -41,14 +41,14 @@ void WriteSeries::dump(std::ostream & os) {
 
   //std::ofstream out_file(filename);
   for (int i{1}; i < N; ++i) {
-    res = this->series.compute(i * this->freq-1);
-    res2 = this->series.compute(i * this->freq);
+    res = this->series->compute(i * this->freq-1);
+    res2 = this->series->compute(i * this->freq);
 
     os
       << std::scientific << std::setprecision(this->precision);
     os << i * this->freq <<this->seperator<< res <<this->seperator<< res2-res;
-    if ( ! std::isnan(this->series.getAnalyticPrediction()) ) {
-      os <<this->seperator <<this->series.getAnalyticPrediction();
+    if ( ! std::isnan(this->series->getAnalyticPrediction()) ) {
+      os <<this->seperator <<this->series->getAnalyticPrediction();
     }
     os << std::endl;
 

@@ -1,6 +1,7 @@
 #include "dumper_series.hh"
 
-DumperSeries::DumperSeries(Series &series_inp):
+
+DumperSeries::DumperSeries(std::unique_ptr<Series>& series_inp):
   series{series_inp},
   precision{4}
   {};

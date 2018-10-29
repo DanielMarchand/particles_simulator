@@ -5,7 +5,9 @@
 class PrintSeries: public DumperSeries{
 public:
   // Constructor
-  PrintSeries(Series &series_inp, Uint maxiter_inp, Uint freq_inp);
+  PrintSeries(std::unique_ptr<Series>& series_inp,
+              Uint maxiter_inp,
+              Uint freq_inp);
   // Destructor
   virtual ~PrintSeries() = default;
 

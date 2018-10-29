@@ -5,7 +5,7 @@
 class WriteSeries: public DumperSeries{
 public:
   // Constructor
-  WriteSeries(Series &series_inp, Uint maxiter_inp, Uint freq_inp);
+  WriteSeries(std::unique_ptr<Series>& series_inp, Uint maxiter_inp, Uint freq_inp);
   // Destructor
   virtual ~WriteSeries() = default;
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-
+#include <memory>
 
 std::ofstream ofstream_from_name(std::string filename){
   std::ofstream myfile;
@@ -21,41 +21,37 @@ int main(int argc, char *argv[])
 {
   std::string series_type = argv[1];
   std::string dumper_type = argv[2];
-  int maxiter_inp = std::stoi(argv[3]);
-  int freq_inp = std::stoi(argv[4]);
+  int maxiter_inp = std::atoi(argv[3]);
+  int freq_inp = std::atoi(argv[4]);
+  std::string filename = argv[5];
 
   std::cout << "TODO: Use shared_unique ptr" << std::endl;
+  std::unique_ptr <Series> my_series;
+
   if ( series_type == "pi" ){
-      ComputePi my_series;
+    my_series = std::make_unique<ComputePi>();
   }else if ( series_type == "algebraic"){
-      ComputeArithmetic my_series;
+    my_series = std::make_unique<ComputeArithmetic>();
   } else {
     std::cerr << "Invalid series_type selected" << std::endl;
   }
 
-  std::cout << "TODO: Use shared_unique ptr" << std::endl;
+  std::unique_ptr <DumperSeries> my_dumper;
   if ( dumper_type == "print" ){
-    PrintSeries my_dumper(my_series,
-                          maxiter_inp,
-                          freq_inp);
-    std::ostream ofs;  ofs =  std::cout;
+    my_dumper = std::make_unique<PrintSeries> (my_series,
+                                               maxiter_inp,
+                                               freq_inp);
   } else if ( dumper_type == "write" ){
-    WriteSeries my_dumper(my_series,
-                          maxiter_inp,
-                          freq_inp);
-    std::cout << "TODO: fix how write handles output" << std::endl;
-    std::string filename = "myfile.txt";
-    std::ofstream ofs;  ofs =  ofstream_from_name(filename);
+    my_dumper = std::make_unique<WriteSeries> (my_series,
+                                               maxiter_inp,
+                                               freq_inp);
+    std::ofstream my_file(filename, std::ofstream::out);
+    my_dumper->dump(my_file);
+    my_file.close();
   } else {
-    std::cerr << "Invalid dumper_type selected" << std::endl;
+   std::cerr << "Invalid dumper_type selected" << std::endl;
   }
 
-  std::cout << "TODO: setPrecision" << std::endl;
-  //my_dumper.setPrecision(7);
-  //my_dumper.dump()
-
-  my_dumper.dump(ofs);
-  ofs.close();
 
   return 0;
 }

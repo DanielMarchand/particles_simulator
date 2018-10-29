@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <cmath>
 
-PrintSeries::PrintSeries(Series &series_inp, Uint maxiter_inp, Uint freq_inp):
+PrintSeries::PrintSeries(std::unique_ptr<Series>& series_inp, Uint maxiter_inp, Uint freq_inp):
   DumperSeries(series_inp)
 {
   this->maxiter = maxiter_inp;
@@ -19,17 +19,17 @@ void PrintSeries::dump(std::ostream & os){
   int N = (int) (this->maxiter / this->freq);
   double res = 0;
   double res2 = 0;
-  os << this->series.getFirstLine()<<std::endl;
+  os << this->series->getFirstLine()<<std::endl;
 
   for (int i{1}; i < N; ++i) {
-    res = this->series.compute(i * this->freq-1);
-    res2 = this->series.compute(i * this->freq);
+    res = this->series->compute(i * this->freq-1);
+    res2 = this->series->compute(i * this->freq);
     os.setf(std::ios::scientific);
     os.precision(this->precision);
 
     os << i * this->freq <<"    "<< res <<"    "<< res2-res;
-    if ( ! std::isnan(this->series.getAnalyticPrediction()) ) {
-      os <<"   " <<this->series.getAnalyticPrediction();
+    if ( ! std::isnan(this->series->getAnalyticPrediction()) ) {
+      os <<"   " <<this->series->getAnalyticPrediction();
     }
     os << std::endl;
   }
