@@ -8,7 +8,7 @@ using Uint = long unsigned int;
 class Series{
 public:
   //Constructor
-  Series();
+  Series(std::string first_line_inp);
   //Destructor
   virtual ~Series() = default;
 
@@ -17,9 +17,12 @@ public:
   virtual double getAnalyticPrediction();
   virtual double computeTerm(Uint k) = 0;
 
+  virtual std::string getFirstLine();
+
 protected:
   int current_term  ;
   double current_value;
+  std::string first_line;
 
 };
 

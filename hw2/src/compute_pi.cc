@@ -2,7 +2,7 @@
 #include <math.h>
 
 ComputePi::ComputePi():
-  Series(){
+  Series("The Pi Series:"){
   std::cout <<"Compute Pi object constructed"<<std::endl;
 }
 /*---------------------------------------------------------------*/

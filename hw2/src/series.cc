@@ -1,9 +1,10 @@
 #include "series.hh"
 #include <cmath>
 
-Series::Series():
+Series::Series(std::string first_line_inp):
   current_term{0},
-  current_value{0.0}
+  current_value{0.0},
+  first_line{first_line_inp}
 {}
 /*---------------------------------------------------------------*/
 void Series::addTerm(){
@@ -31,4 +32,10 @@ double Series::compute (int N) {
     this->addTerm();
   }
   return this->current_value;
+}
+
+/*---------------------------------------------------------------*/
+
+std::string Series::getFirstLine(){
+  return this->first_line;
 }

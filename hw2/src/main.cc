@@ -27,10 +27,10 @@ int main(int argc, char *argv[])
                                 freq_inp);
 
 
-  my_printseries_pi.setPrecision(3);
-  my_printseries_pi.dump();
+  my_printseries_pi.setPrecision(7);
+  my_printseries_pi.dump(os);
 
-  my_printseries.setPrecision(3);
+  my_printseries.setPrecision(6);
   my_printseries.dump();
   return 0;
 }

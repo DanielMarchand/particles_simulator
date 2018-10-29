@@ -2,7 +2,8 @@
 #include "series.hh"
 
 ComputeArithmetic::ComputeArithmetic():
-  Series(){std::cout <<"Compute Arithmetic object constructed"<<std::endl;}
+  Series("The Artihemtic Series:"){
+  std::cout <<"Compute Arithmetic object constructed"<<std::endl;}
 
 /*---------------------------------------------------------------*/
 double ComputeArithmetic::computeTerm (Uint K) {
