@@ -3,7 +3,6 @@
 
 ComputePi::ComputePi():
   Series("The Pi Series:"){
-  std::cout <<"Compute Pi object constructed"<<std::endl;
 }
 /*---------------------------------------------------------------*/
 double ComputePi::compute (int N)  {
