@@ -21,9 +21,8 @@ TEST(FFT, transform) {
     UInt i = std::get<0>(entry);
     UInt j = std::get<1>(entry);
     auto& val = std::get<2>(entry);
-    if (std::abs(val) > 1e-10)
-      std::cout << i << "," << j << " = " << val << std::endl;
 
+    // Check that there are only two frequencies at i,j=0 and i=N-1, j=0
     if (i == 1 && j == 0)
       ASSERT_NEAR(std::abs(val), N * N / 2, 1e-10);
     else if (i == N - 1 && j == 0)
@@ -35,7 +34,7 @@ TEST(FFT, transform) {
 /*****************************************************************/
 
 TEST(FFT, inverse_transform) {
-  //TODO pull general elements out into a test setup
+  //NOTE can consider pulling general elements out into a test setup
   UInt N = 512;
   Matrix<complex> m(N);
 
@@ -50,16 +49,17 @@ TEST(FFT, inverse_transform) {
   Matrix<complex> res = FFT::transform(m);
   Matrix<complex> inv_res = FFT::itransform(res);
 
-  // Check that the F^-1F(m) == m
+  std::cout << m.size() << std::endl;
+
+  // Check that the F^-1F(m) == m * N*N (FFTW does not normalize)
   for (auto&& entry : index(m)) {
-    for (auto&& inv_entry : index(inv_res)) {
+      UInt i = std::get<0>(entry);
+      UInt j = std::get<1>(entry);
       auto& val = std::get<2>(entry);
-      auto& inv_val = std::get<2>(inv_entry);
-      std::cout << "val: "  << val << std::endl;
-      std::cout << "inv_val: " << inv_val << std::endl;
+      auto& inv_val = inv_res(i,j);
+
       //NOTE std::abs does not check the sign adequately
-      ASSERT_NEAR(std::abs(val), std::abs(inv_val), 1e-10);
+      ASSERT_NEAR(std::abs(val), std::abs(inv_val)/(N*N), 1e-10);
     }
-  }
 }
 /*****************************************************************/
