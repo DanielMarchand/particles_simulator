@@ -63,3 +63,23 @@ TEST(FFT, inverse_transform) {
     }
 }
 /*****************************************************************/
+
+TEST(FFT, compute_frequency) {
+  UInt N = 512;
+  Matrix<std::complex<int>> frequency_matrix = FFT::computeFrequencies(N);
+
+  for (auto&& entry : index(frequency_matrix)) {
+    UInt i = std::get<0>(entry);
+    UInt j = std::get<1>(entry);
+    auto& val = std::get<2>(entry);
+
+    if (i == 0)
+      ASSERT_NEAR(val.real(), 0, 1e-10);
+    else if (j == 0)
+      ASSERT_NEAR(val.imag(), 0, 1e-10);
+    else if (i == N - 1)
+      ASSERT_NEAR(val.real(), -1, 1e-10);
+    else if (j == N - 1)
+      ASSERT_NEAR(val.imag(), -1, 1e-10);
+  }
+}

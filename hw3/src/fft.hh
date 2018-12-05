@@ -52,6 +52,30 @@ inline Matrix<complex> FFT::itransform(Matrix<complex>& m_in) {
 /* ------------------------------------------------------ */
 
 inline Matrix<std::complex<int>> FFT::computeFrequencies(int size) {
+  UInt N = size;
+  Matrix<std::complex<int>> frequency_matrix(N);
+
+  double max_delta = double(N) / 2;
+
+  for (auto&& entry : index(frequency_matrix)) {
+    UInt i = std::get<0>(entry);
+    UInt j = std::get<1>(entry);
+    auto& val = std::get<2>(entry);
+
+    int i_val = i;
+    if(i >= max_delta){
+      i_val = i_val - N;
+    }
+    int j_val = j;
+    if(j >= max_delta){
+      j_val = j_val - N;
+    }
+
+    val.real(i_val);
+    val.imag(j_val);
+  }
+
+  return frequency_matrix;
 
 }
 
