@@ -1,4 +1,3 @@
-
 #include "compute_temperature.hh"
 
 /* -------------------------------------------------------------------------- */
@@ -43,4 +42,38 @@ void ComputeTemperature::compute(System& system) {
                                                           temperature_derivative));
   // updating particles' temperature with the updated temperature matrix
   updateParticleTemperatures(system, temperatures_matrix);
+}
+
+/* -------------------------------------------------------------------------- */
+void ComputeTemperature::updateParticleTemperatures
+(System& system,Matrix<complex> temperatures_matrix){
+  UInt Nb_particles = system.getNbParticles();
+  UInt size = sqrt(Nb_particles);
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
+      auto& par = system.getParticle(i * size +j);
+      auto& mat_par = static_cast<MaterialPoint&>(par);
+      auto& temp = mat_par.getTemperature();
+      temp = temperatures_matrix(i,j).real();
+    }
+  }
+
+}
+/*------------------------------------------------------------------------- */
+
+
+Matrix<complex> ComputeTemperature::makeMatrix
+(std::vector<double> vec){
+  int size = sqrt(vec.size());
+  int iter = 0 ;
+  Matrix<complex> ret_mat ;
+  // reshape the contiguous 1D vec into 2D matrix
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
+      ret_mat(i,j).real(vec.at(iter));
+      ret_mat(i,j).imag(0.0);
+      ++iter;
+    }
+  }
+  return ret_mat;
 }

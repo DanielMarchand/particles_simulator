@@ -18,7 +18,7 @@ public:
   using ParticleList = std::vector<std::shared_ptr<Particle>>;
 
   //! Remove particle from vector
-  void removeParticle(UInt particle){};
+  //void removeParticle(UInt particle){};
   //! Get particle for specific id
   Particle& getParticle(UInt i);
   //! Add a particle to the system
