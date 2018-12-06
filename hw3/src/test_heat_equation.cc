@@ -15,7 +15,7 @@ protected:
     std::vector<MaterialPoint> material_points;
     Real test_temp = 1;
     Real test_heatrate = 0;
-
+    std::cout << "hello" << std::endl;
     UInt size = 10;
     this->number_mat_points = size*size;
     for (UInt i = 0; i < size; ++i) {

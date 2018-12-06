@@ -16,7 +16,7 @@ public:
   void compute(System& system) override;
   void setDeltaT(Real dt);
   inline void updateParticleTemperatures(System& system, Matrix<complex> temperature_matrix);
-  inline Matrix<complex> makeMatrix(std::vector<double> vec);
+  inline Matrix<complex> makeMatrix(const std::vector<Real>& vec);
 
 private:
   Real dt {1.0};
@@ -44,14 +44,14 @@ inline void ComputeTemperature::updateParticleTemperatures
 
 
 inline Matrix<complex> ComputeTemperature::makeMatrix
-(std::vector<double> vec){
-  int size = sqrt(vec.size());
-  int iter = 0 ;
-  Matrix<complex> ret_mat ;
+(const std::vector<Real>& vec){
+  UInt size = sqrt(vec.size());
+  UInt iter = 0 ;
+  Matrix<complex> ret_mat(size);
   // reshape the contiguous 1D vec into 2D matrix
   for (int i = 0; i < size; ++i) {
     for (int j = 0; j < size; ++j) {
-      ret_mat(i,j).real(vec.at(iter));
+      ret_mat(i,j).real(vec[iter]);
       ret_mat(i,j).imag(0.0);
       ++iter;
     }

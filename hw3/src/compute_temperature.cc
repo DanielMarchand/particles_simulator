@@ -23,6 +23,7 @@ void ComputeTemperature::compute(System& system) {
 
   auto temperatures_matrix = this->makeMatrix(tempeatures);
   auto heat_rates_matrix   = this->makeMatrix(heat_rates);
+
   //Fourier Transform of temperature and heat rate :
   auto temperatures_fft = FFT::transform(temperatures_matrix);
   auto heat_rates_fft   = FFT::transform(heat_rates_matrix);
