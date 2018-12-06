@@ -1,3 +1,4 @@
+#include <memory>
 #include "dumper_series.hh"
 
 
