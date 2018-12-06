@@ -26,7 +26,6 @@ void ComputeVerletIntegration::compute(System& system) {
 
   for (auto& par : system)
     par.getForce() = 0;
-  
   for (auto& interaction : interactions)
     interaction->compute(system);
 

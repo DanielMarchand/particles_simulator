@@ -3,15 +3,23 @@
 
 /* -------------------------------------------------------------------------- */
 #include "compute.hh"
+#include "matrix.hh"
 
 //! Compute contact interaction between ping-pong balls
 class ComputeTemperature : public Compute {
 
   // Virtual implementation
 public:
-  //! Penalty contact implementation
   void compute(System& system) override;
+  void setDeltaT(Real dt);
+  void updateParticleTemperatures(System& system, Matrix<complex> temperature_matrix);
+  Matrix<complex> makeMatrix(std::vector<double> var);
 
+private:
+  Real dt {1.0};
+  Real conducivityK {1.0};
+  Real density {1.0};
+  Real capacity {1.0};
 };
 
 /* -------------------------------------------------------------------------- */
