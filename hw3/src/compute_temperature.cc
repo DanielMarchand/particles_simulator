@@ -1,10 +1,5 @@
+
 #include "compute_temperature.hh"
-#include "fft.hh"
-#include "material_point.hh"
-#include <cmath>
-
-
-
 
 /* -------------------------------------------------------------------------- */
 
@@ -27,8 +22,8 @@ void ComputeTemperature::compute(System& system) {
     heat_rates.push_back(mat_par.getHeatRate());
   }
 
-  auto temperatures_matrix = makeMatrix(tempeatures);
-  auto heat_rates_matrix   = makeMatrix(heat_rates);
+  auto temperatures_matrix = this->makeMatrix(tempeatures);
+  auto heat_rates_matrix   = this->makeMatrix(heat_rates);
   //Fourier Transform of temperature and heat rate :
   auto temperatures_fft = FFT::transform(temperatures_matrix);
   auto heat_rates_fft   = FFT::transform(heat_rates_matrix);
@@ -48,37 +43,4 @@ void ComputeTemperature::compute(System& system) {
                                                           temperature_derivative));
   // updating particles' temperature with the updated temperature matrix
   updateParticleTemperatures(system, temperatures_matrix);
-}
-
-/* ------------------------------------------------------------------------- */
-
-
-Matrix<complex> makeMatrix(std::vector<double> vec){
-  int size = sqrt(vec.size());
-  int iter = 0 ;
-  Matrix<complex> ret_mat ;
-  // reshape the contiguous 1D vec into 2D matrix
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      ret_mat(i,j).real(vec.at(iter));
-      ret_mat(i,j).imag(0.0);
-      ++iter;
-    }
-  }
-  return ret_mat;
-}
-
-
-void ComputeTemperature::updateParticleTemperatures(System& system, Matrix<complex> temperatures_matrix){
-  UInt Nb_particles = system.getNbParticles();
-  UInt size = sqrt(Nb_particles);
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      auto& par = system.getParticle(i * size +j);
-      auto& mat_par = static_cast<MaterialPoint&>(par);
-      auto& temp = mat_par.getTemperature();
-      temp = temperatures_matrix(i,j).real();
-    }
-  }
-
 }

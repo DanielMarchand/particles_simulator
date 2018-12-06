@@ -4,6 +4,9 @@
 /* -------------------------------------------------------------------------- */
 #include "compute.hh"
 #include "matrix.hh"
+#include "fft.hh"
+#include "material_point.hh"
+#include <cmath>
 
 //! Compute contact interaction between ping-pong balls
 class ComputeTemperature : public Compute {
@@ -12,8 +15,8 @@ class ComputeTemperature : public Compute {
 public:
   void compute(System& system) override;
   void setDeltaT(Real dt);
-  void updateParticleTemperatures(System& system, Matrix<complex> temperature_matrix);
-  Matrix<complex> makeMatrix(std::vector<double> var);
+  inline void updateParticleTemperatures(System& system, Matrix<complex> temperature_matrix);
+  inline Matrix<complex> makeMatrix(std::vector<double> vec);
 
 private:
   Real dt {1.0};
@@ -21,6 +24,42 @@ private:
   Real density {1.0};
   Real capacity {1.0};
 };
+
+
+/*------------------------------------------------------------------------- */
+
+
+Matrix<complex> ComputeTemperature::makeMatrix
+(std::vector<double> vec){
+  int size = sqrt(vec.size());
+  int iter = 0 ;
+  Matrix<complex> ret_mat ;
+  // reshape the contiguous 1D vec into 2D matrix
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
+      ret_mat(i,j).real(vec.at(iter));
+      ret_mat(i,j).imag(0.0);
+      ++iter;
+    }
+  }
+  return ret_mat;
+}
+
+/* -------------------------------------------------------------------------- */
+void ComputeTemperature::updateParticleTemperatures
+(System& system,Matrix<complex> temperatures_matrix){
+  UInt Nb_particles = system.getNbParticles();
+  UInt size = sqrt(Nb_particles);
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
+      auto& par = system.getParticle(i * size +j);
+      auto& mat_par = static_cast<MaterialPoint&>(par);
+      auto& temp = mat_par.getTemperature();
+      temp = temperatures_matrix(i,j).real();
+    }
+  }
+
+}
 
 /* -------------------------------------------------------------------------- */
 #endif  //__COMPUTE_TEMPERATURE__HH__
