@@ -6,4 +6,5 @@ fi
 mkdir dumps
 
 #particles n_timesteps radius output_file particle_type timestep
-../src/build/particles 100 1 radial_heat_highresolution.txt material_point 0.001
+#../src/build/particles 100 1 radial_heat_highresolution.txt material_point 0.001
+../src/build/particles 100 1 radial_heat_tinyresolution.txt material_point 0.001

@@ -44,6 +44,11 @@ inline Matrix<complex> FFT::itransform(Matrix<complex>& m_in) {
                                     +1,
                                     FFTW_ESTIMATE);
   fftw_execute(fftw_plan);
+  for (auto&& entry : index(m_out)) {
+    auto& val = std::get<2>(entry);
+    // FFTW does not normalize its output
+    val.real(val.real() / (m_in.cols() * m_in.cols() ) );
+  }
   return m_out;
 }
 
