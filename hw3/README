@@ -1,4 +1,6 @@
-Basic usage and installation: 
+#TODO describe how the particles are organized in the various objects
+
+Basic usage and installation:
 
 Ensure that both google test and fftw is installed
 
@@ -46,7 +48,7 @@ $ $SP4EHW_ROOT/hw3/ex_inputs/
 ./launch_paraview.sh will launch paraview and load a pre-configured state 'paraviewer.pvsm'
 
 
-
-#TODO describe how the particles are organized in the various objects
-
-
+# How is the boundary condition applied?
+Currently we have a very simple hard-coded manner of applying the boundary conditions.
+In the routine "ComputeTemperature::updateParticleTemperatures" we manually set the temperature
+for any particles that happen to lay at the boundary.
