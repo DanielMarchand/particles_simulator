@@ -59,7 +59,7 @@ TEST(FFT, inverse_transform) {
       auto& inv_val = inv_res(i,j);
 
       //NOTE std::abs does not check the sign adequately
-      ASSERT_NEAR(std::abs(val), std::abs(inv_val)/(N*N), 1e-10);
+      ASSERT_NEAR(std::abs(val), std::abs(inv_val), 1e-10);
     }
 }
 /*****************************************************************/
