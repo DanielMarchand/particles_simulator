@@ -1,0 +1,52 @@
+Basic usage and installation: 
+
+Ensure that both google test and fftw is installed
+
+$ git clone ssh://git@c4science.ch/diffusion/7584/sp-e_hw.git $SP4EHW_ROOT
+
+$ cd $SP4EHW_ROOT/hw3/src
+
+$ mkdir build && cd build && ccmake ..
+$ make
+
+Confirm proper installation by running the following tests:
+
+$ ./test_fft
+$ ./test_heat_equation
+$ ./test_kepler
+
+To generate a set of initial data a python script 'generate_heatequation.py' is provided
+
+$ $SP4EHW_ROOT/hw3/src generate_heatequation.py <resolution> <heat radius> <output file>
+
+To run the code execute the following:
+
+$ mkdir dumps
+$ $SP4EHW_ROOT/hw3/src/build/particles <n timesteps> <dump freq> <input file> material_point <delt>
+
+To visualize the output you may run the following steps:
+
+1) Launch paraview
+2) open $MYDIR/dumps/steps-..csv
+3) Remove the ',' field delimeter and deselect 'Have Headers'
+4) Add the filter 'Table to Points'
+5) Make the X Column Field 0, Y column Field 1, and select '2D Points'
+6) Change coloring from 'Solid Color' to 'Field 2'
+7) <Optional> Play with the 'Point Size', and colour settings as-needed
+8) <Optional> If you change the input you may need to reload the files or add new ones..
+   This can be done by right clicking the step-..csv properties icon, and clicking
+   'Find new files' then repeating with 'Reload existing file(s)'
+
+There are example scripts with sensible defaults available at:
+
+$ $SP4EHW_ROOT/hw3/ex_inputs/
+
+./gen_highresolution_radial.sh generates a high resolution (128) NxN grid of radial heat
+./run_particles.sh runs a high resolution input file
+./launch_paraview.sh will launch paraview and load a pre-configured state 'paraviewer.pvsm'
+
+
+
+#TODO describe how the particles are organized in the various objects
+
+
