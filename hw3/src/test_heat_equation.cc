@@ -15,12 +15,13 @@ protected:
     std::vector<MaterialPoint> material_points;
     Real test_temp = 1;
     Real test_heatrate = 0;
-    std::cout << "hello" << std::endl;
     UInt size = 10;
     this->number_mat_points = size*size;
     for (UInt i = 0; i < size; ++i) {
       for (UInt j = 0; j < size; ++j) {
         MaterialPoint p;
+        p.getPositionX() = i;
+        p.getPositionY() = j;
         p.getTemperature() = test_temp;
         p.getHeatRate() = test_heatrate;
         material_points.push_back(p);

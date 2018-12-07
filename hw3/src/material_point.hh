@@ -17,11 +17,14 @@ public:
 
   Real & getTemperature(){return temperature;};
   Real & getHeatRate(){return heat_rate;};
-
-
+  Real & getPositionX(){return position_x;};
+  Real & getPositionY(){return position_y;};
 
 
 private:
+  // vector was considered for position, but we only need two dimensions
+  Real position_x, position_y;
+
   Real temperature;
   Real heat_rate;
 
