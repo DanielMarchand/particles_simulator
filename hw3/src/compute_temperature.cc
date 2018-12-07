@@ -47,7 +47,7 @@ void ComputeTemperature::compute(System& system) {
   auto heat_rates_fft   = FFT::transform(heat_rates_matrix);
   auto squared_freqs = FFT::computeFrequenciesSquaredNorm(size);
 
-  // dθₙ/dt = hᵥ - κ * θₙ *(qx² +qy²) [Fourier space]
+  // dθₙ/dt =(1/(ρc)) * (hᵥ - κ * θₙ *(qx² +qy²)) [Fourier space]
   auto temps_multiplied_sq_freqs = matrixmatrixElementMult(temperatures_fft,
                                                            squared_freqs);
   temps_multiplied_sq_freqs = scalarmatrixMult(this->conducivityK,
