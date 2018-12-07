@@ -38,7 +38,13 @@ inline void ComputeTemperature::updateParticleTemperatures
       auto& par = system.getParticle(i * size +j);
       auto& mat_par = static_cast<MaterialPoint&>(par);
       auto& temp = mat_par.getTemperature();
+
       temp = temperatures_matrix(i,j).real();
+
+      // currently we hard-code a permanent temp of 0 at the boundaries
+      if (i == 0 || j == 0 || i == size -1 || j == size -1){
+        temp = 0;
+      }
     }
   }
 
