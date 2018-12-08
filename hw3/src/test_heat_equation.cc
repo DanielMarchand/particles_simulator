@@ -13,7 +13,7 @@ protected:
   void SetUp() override {
     MaterialPointsFactory::getInstance();
     std::vector<MaterialPoint> material_points;
-    Real test_temp = 0;
+    Real test_temp = 1;
     Real test_heatrate = 0;
     UInt size = 10;
     this->number_mat_points = size*size;
@@ -33,6 +33,7 @@ protected:
     }
 
     compute_temp = std::make_shared<ComputeTemperature>();
+    compute_temp->set_bordertemp_zero = false;
   }
 
   System system;
@@ -70,7 +71,7 @@ TEST_F(HomogeneousTemp_ZeroFlux, temperature_change) {
 
   for (auto& par : system) {
     auto& mat_par = static_cast<MaterialPoint&>(par);
-    ASSERT_NEAR(mat_par.getTemperature(), 0.0, 1e-10);
+    ASSERT_NEAR(mat_par.getTemperature(), 1.0, 1e-10);
   }
 
 }

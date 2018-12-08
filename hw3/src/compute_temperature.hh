@@ -18,6 +18,7 @@ public:
   void setDeltaConductivityK(Real ConductivityK);
   void setDeltaDensity(Real density);
   void setDeltaCapacity(Real capacity);
+  bool set_bordertemp_zero = true;
   inline void updateParticleTemperatures(System& system, Matrix<complex> temperature_matrix);
   inline Matrix<complex> makeMatrix(const std::vector<Real>& vec);
 
@@ -41,8 +42,9 @@ inline void ComputeTemperature::updateParticleTemperatures
 
       temp = temperatures_matrix(i,j).real();
 
-      // currently we hard-code a permanent temp of 0 at the boundaries
-      if (i == 0 || j == 0 || i == size -1 || j == size -1){
+      // set border temps to zero if set_bordertemp_zero is enabled
+      if (set_bordertemp_zero &&
+          (i == 0 || j == 0 || i == size -1 || j == size -1)){
         temp = 0;
       }
     }
