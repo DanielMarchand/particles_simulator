@@ -26,7 +26,7 @@ To run the code execute the following:
 $ mkdir dumps
 $ $SP4EHW_ROOT/hw3/src/build/particles <n timesteps> <dump freq> <input file> material_point <delt>
 
-To visualize the output you may run the following steps:
+To visualize the output from scratch you may run the following steps:
 
 1) Launch paraview
 2) open $MYDIR/dumps/steps-..csv
@@ -39,13 +39,20 @@ To visualize the output you may run the following steps:
    This can be done by right clicking the step-..csv properties icon, and clicking
    'Find new files' then repeating with 'Reload existing file(s)'
 
+You may also use the predefined paraview state file found at:
+
+  $SP4EHW_ROOT/hw3/ex_inputs/paraviewer.pvsm
+
+1) launch paraview
+2) use the 'load state' option
+3) you will then be prompted as to which data you would like to select
+
 There are example scripts with sensible defaults available at:
 
 $ $SP4EHW_ROOT/hw3/ex_inputs/
 
 ./gen_highresolution_radial.sh generates a high resolution (128) NxN grid of radial heat
 ./run_particles.sh runs a high resolution input file
-./launch_paraview.sh will launch paraview and load a pre-configured state 'paraviewer.pvsm'
 
 
 # How is the boundary condition applied?
