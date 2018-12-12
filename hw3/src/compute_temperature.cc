@@ -47,23 +47,22 @@ void ComputeTemperature::compute(System& system) {
   auto heat_rates_fft   = FFT::transform(heat_rates_matrix);
   auto squared_freqs = FFT::computeFrequenciesSquaredNorm(size);
 
-  // dθₙ/dt =(1/(ρc)) * (hᵥ - κ * θₙ *(qx² +qy²)) [Fourier space]
-  auto temps_multiplied_sq_freqs = matrixmatrixElementMult(temperatures_fft,
-                                                           squared_freqs);
-  temps_multiplied_sq_freqs = scalarmatrixMult(this->conducivityK,
-                                               temps_multiplied_sq_freqs);
-  auto temperature_derivative_fft = Matrix<complex>(size);
-  temperature_derivative_fft = matrixmatrixSubtract(heat_rates_fft,
-                                                    temps_multiplied_sq_freqs);
-  temperature_derivative_fft = scalarmatrixMult((1/this->density / this->capacity),
-                                                temperature_derivative_fft);
-  // Inverse Fourier Transform of temperature derivative:
-  auto temperature_derivative = FFT::itransform(temperature_derivative_fft);
+  // dθₙ/dt =(1/(ρc)) * (hᵥ - κ * θₙ₊₁ *(qx² +qy²)) [Fourier space] =>
+  // θₙ₊₁ = ( (Δt*hᵥ/ρC) + θₙ) / (1 + (Δt*κ/ρC)(qx² +qy²) )[Fourier space]
+  auto scalar_temp = dt / (this->capacity * this->density);
+  auto denumenator_fft = Matrix<complex>(size);
+  auto numenator_fft = Matrix<complex>(size);
 
-  // θₙ₊₁ = θₙ + Δt * ∂θₙ/∂t [Real space]
-  temperatures_matrix = matrixmatrixAdd (temperatures_matrix,
-                                         scalarmatrixMult(dt,
-                                                          temperature_derivative));
+  numenator_fft = matrixmatrixAdd(scalarmatrixMult(scalar_temp, heat_rates_fft),
+                                  temperatures_fft);
+
+  denumenator_fft = scalarmatrixAdd(1.0,
+                                    scalarmatrixMult(scalar_temp*this->conducivityK,
+                                                     squared_freqs));
+
+  temperatures_fft = matrixmatrixElementDivide(numenator_fft, denumenator_fft);
+  temperatures_matrix = FFT::itransform(temperatures_fft);
+
   // updating particles' temperature with the updated temperature matrix
   updateParticleTemperatures(system, temperatures_matrix);
 }

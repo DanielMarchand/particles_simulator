@@ -145,15 +145,43 @@ inline Matrix<T> matrixmatrixElementMult(Matrix<T> mat_1, Matrix<P> mat_2){
   return ret_mat;
 }
 
+
 template<typename T, typename P >
-inline Matrix<T> scalarmatrixMult(P t, Matrix<T> mat){
+inline Matrix<T> matrixmatrixElementDivide(Matrix<T> mat_1, Matrix<P> mat_2){
+  UInt ret_size = mat_1.size();
+  Matrix<T> ret_mat(ret_size);
+  for (auto&& entry : index(ret_mat)) {
+    UInt i = std::get<0>(entry);
+    UInt j = std::get<1>(entry);
+    auto& val = std::get<2>(entry);
+    val = mat_1(i,j) / mat_2(i,j);
+  }
+  return ret_mat;
+}
+
+template<typename T, typename P >
+inline Matrix<T> scalarmatrixMult(P p, Matrix<T> mat){
   UInt ret_size = mat.size();
   Matrix<T> ret_mat(ret_size);
   for (auto&& entry : index(ret_mat)) {
     UInt i = std::get<0>(entry);
     UInt j = std::get<1>(entry);
     auto& val = std::get<2>(entry);
-    val = t * mat(i,j);
+    val = p * mat(i,j);
+  }
+  return ret_mat;
+}
+
+
+template<typename T, typename P >
+inline Matrix<T> scalarmatrixAdd(P p, Matrix<T> mat){
+  UInt ret_size = mat.size();
+  Matrix<T> ret_mat(ret_size);
+  for (auto&& entry : index(ret_mat)) {
+    UInt i = std::get<0>(entry);
+    UInt j = std::get<1>(entry);
+    auto& val = std::get<2>(entry);
+    val = p + mat(i,j);
   }
   return ret_mat;
 }
