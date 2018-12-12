@@ -13,5 +13,5 @@ mkdir dumps
 
 N_TIMESTEPS=100
 DUMP_FREQ=10
-DELTA_T=0.0001
+DELTA_T=0.01
 ../src/build/particles $N_TIMESTEPS $DUMP_FREQ $INPUT_FILE material_point $DELTA_T
