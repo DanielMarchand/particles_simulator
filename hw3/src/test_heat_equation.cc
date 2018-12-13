@@ -90,19 +90,17 @@ protected:
     std::vector<MaterialPoint> material_points;
     Real test_temp = 0;
     Real test_heatrate = 0;
-    //UInt size = 512;
-    size =  8;// 512;
+    size =  512;// 512;
     this->number_mat_points = size*size;
 
-    std::cout << size/4 << std::endl;
-    std::cout << 3*size/4 << std::endl;
-    for (UInt i = 0; i < size; ++i) {
-      for (UInt j = 0; j < size; ++j) {
+    for (int i = 0; i < size; ++i) {
+      for (int j = 0; j < size; ++j) {
         MaterialPoint p;
-        //p.getPositionX() = (i - (size -1) / 2) / ((size -1) / 2);
-        //p.getPositionY() = (j - (size -1) / 2) / ((size -1) / 2);;
-        p.getPositionX() = i-size/2;
-        p.getPositionY() = j-size/2;
+        Real real_size = size;
+        Real real_i = i;
+        Real real_j = j;
+        p.getPositionX() = (real_i - (real_size -1) / 2) / ((real_size -1) / 2);
+        p.getPositionY() = (real_j - (real_size -1) / 2) / ((real_size -1) / 2);;
         p.getTemperature() = test_temp;
         p.getHeatRate() = test_heatrate;
 
@@ -115,11 +113,6 @@ protected:
         }
         material_points.push_back(p);
 
-        // record the temp across a horizontal
-        if(j==0){
-          previous_solution.push_back(test_temp);
-          new_solution.push_back(test_temp);
-        }
       }
     }
 
@@ -128,49 +121,51 @@ protected:
     }
 
     compute_temp = std::make_shared<ComputeTemperature>();
-    Real timestep = 1.0;
+    Real timestep = 1;
     compute_temp->setDeltaT(timestep);
-    compute_temp->set_bordertemp_zero = false;
-
-    // setup
-    del_solution = 100;
-
+    compute_temp->setBorderTempFlag(false);
 
   }
 
   System system;
-  UInt size;
+  int size;
   UInt number_mat_points;
-  Real del_solution;
   std::vector<Real> previous_solution;
-  std::vector<Real> new_solution;
 
+  std::vector<Real> new_solution;
   std::shared_ptr<ComputeTemperature> compute_temp;
 };
 /*****************************************************************/
 TEST_F(VolumetricHeatSource, temperature_change) {
-  UInt nsteps = 30;
+  UInt nsteps =  5; // found to be enough timesteps to reach convergence;
   UInt freq   =  1;
 
   for (UInt i = 0; i < nsteps; ++i) {
     if (i % freq == 0 || i == 0) {
-      //std::stringstream sstr;
-      //sstr << "testdumps/step-" << std::setfill('0') << std::setw(5) << i << ".csv";
-      //CsvWriter writer(sstr.str());
-      //writer.compute(system);
+      int iterr = 0 ;
+      for (auto& par : system){
 
-      std::cout << "iteration i: " <<  i  << "/" << nsteps << std::endl;
-      std::cout << "new_sol: ";
-      for (auto v_i = new_solution.begin(); v_i != new_solution.end(); ++v_i){
-        std::cout << *v_i << ' ';
+        auto& mat_par = static_cast<MaterialPoint&>(par);
+        Real pos_x = mat_par.getPositionX();
+        if (pos_x == -1) { iterr ++;}
+        Real expected_temp;
+        if (pos_x < -0.5){
+          expected_temp = (-pos_x - 1);
+        }
+        else if (pos_x >= -0.5 && pos_x <= 0.5){
+          expected_temp = pos_x;
+        }
+        else if (pos_x > 0.5){
+          expected_temp = -pos_x + 1;
+        }
       }
-      std::cout << std::endl;
 
 
     }
     compute_temp->compute(system);
 
     // update the 'old solution' vector
+    new_solution.clear();
     for (auto& par : system) {
       auto& mat_par = static_cast<MaterialPoint&>(par);
       if (mat_par.getPositionY() == 0){
@@ -183,33 +178,20 @@ TEST_F(VolumetricHeatSource, temperature_change) {
     auto& mat_par = static_cast<MaterialPoint&>(par);
     Real pos_x = mat_par.getPositionX();
     Real expected_temp;
-    if (pos_x < size/4){
-      std::cout << "pos_x size (-pos_x - 1)/size: " <<
-        pos_x << " " <<
-        size <<  " " <<
-        (-pos_x - 1)/size << std::endl;
-      expected_temp = (-pos_x - 1)/size;
-      ASSERT_NEAR(mat_par.getTemperature(), expected_temp, 1e-5*size);
+    Real real_size = size;
+    Real temp_accuarcy = 0.01;
+    if (pos_x < -0.5){
+      expected_temp = (-pos_x - 1)/real_size;
+      ASSERT_NEAR(mat_par.getTemperature(), expected_temp, temp_accuarcy);
     }
-    else if (pos_x > size/4 && pos_x < (3*size)/4){
-      std::cout << "pos_x size (-pos_x - 1)/size: " <<
-        pos_x << " " <<
-        size <<  " " <<
-        (pos_x - 1)/size << std::endl;
-      expected_temp = (pos_x - 1)/size;
-      ASSERT_NEAR(mat_par.getTemperature(), expected_temp, 1e-5*size);
+    else if (pos_x >= -0.5 && pos_x <= 0.5){
+      expected_temp = pos_x/real_size;
+      ASSERT_NEAR(mat_par.getTemperature(), expected_temp, temp_accuarcy);
     }
-    else if (pos_x > (3*size)/4){
-      std::cout << "pos_x size (-pos_x - 1)/size: " <<
-        pos_x << " " <<
-        size <<  " " <<
-        (-pos_x + 1)/size << std::endl;
-      expected_temp = (-pos_x + 1)/size;
-      ASSERT_NEAR(mat_par.getTemperature(), expected_temp, 1e-5*size);
+    else if (pos_x > 0.5){
+      expected_temp = (-pos_x + 1)/real_size;
+      ASSERT_NEAR(mat_par.getTemperature(), expected_temp, temp_accuarcy);
     }
   }
-
-  //  ASSERT_NEAR(mat_par.getTemperature(), 1.0, 1e-10);
-  //}
 
 }
