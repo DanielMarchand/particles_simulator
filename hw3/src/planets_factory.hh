@@ -20,7 +20,8 @@ private:
 
 public:
   SystemEvolution& createSimulation(const std::string& fname,
-                                    Real timestep) override;
+                                    Real timestep,
+                                    bool border_flag = false) override;
 
   std::unique_ptr<Particle> createParticle() override;
 

@@ -16,7 +16,8 @@ std::unique_ptr<Particle> PlanetsFactory::createParticle() {
 /* -------------------------------------------------------------------------- */
 
 SystemEvolution& PlanetsFactory::createSimulation(const std::string& fname,
-                                                  Real timestep) {
+                                                  Real timestep,
+                                                  bool border_flag) {
 
   this->system_evolution =
       std::make_unique<SystemEvolution>(std::make_unique<System>());

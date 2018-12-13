@@ -13,9 +13,9 @@ std::unique_ptr<Particle> MaterialPointsFactory::createParticle() {
 
 /* -------------------------------------------------------------------------- */
 
-SystemEvolution&
-MaterialPointsFactory::createSimulation(const std::string& fname,
-                                        Real timestep) {
+SystemEvolution &
+MaterialPointsFactory::createSimulation(const std::string &fname, Real timestep,
+                                        bool border_flag) {
 
   this->system_evolution =
       std::make_unique<SystemEvolution>(std::make_unique<System>());
@@ -31,6 +31,7 @@ MaterialPointsFactory::createSimulation(const std::string& fname,
 
   auto compute_temperature = std::make_shared<ComputeTemperature>();
   compute_temperature->setDeltaT(timestep);
+  compute_temperature->setBorderTempFlag(border_flag);
   this->system_evolution->addCompute(compute_temperature);
 
   return *system_evolution;
@@ -38,7 +39,7 @@ MaterialPointsFactory::createSimulation(const std::string& fname,
 
 /* -------------------------------------------------------------------------- */
 
-ParticlesFactoryInterface& MaterialPointsFactory::getInstance() {
+ParticlesFactoryInterface &MaterialPointsFactory::getInstance() {
   if (not ParticlesFactoryInterface::factory)
     ParticlesFactoryInterface::factory = new MaterialPointsFactory;
 

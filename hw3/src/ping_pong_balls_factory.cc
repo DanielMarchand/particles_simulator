@@ -16,7 +16,8 @@ std::unique_ptr<Particle> PingPongBallsFactory::createParticle() {
 
 SystemEvolution&
 PingPongBallsFactory::createSimulation(const std::string& fname,
-                                       Real timestep) {
+                                       Real timestep,
+                                       bool border_flag) {
   this->system_evolution =
       std::make_unique<SystemEvolution>(std::make_unique<System>());
 

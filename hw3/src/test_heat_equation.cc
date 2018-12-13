@@ -33,7 +33,10 @@ protected:
     }
 
     compute_temp = std::make_shared<ComputeTemperature>();
-    compute_temp->set_bordertemp_zero = false;
+
+    // here one can change if setting temperature
+    // on the boundary is needed or not
+    compute_temp -> setBorderTempFlag(false);
   }
 
   System system;
