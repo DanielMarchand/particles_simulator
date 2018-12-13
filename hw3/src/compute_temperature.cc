@@ -48,7 +48,7 @@ void ComputeTemperature::compute(System& system) {
   auto squared_freqs = FFT::computeFrequenciesSquaredNorm(size);
 
   // dθₙ/dt =(1/(ρc)) * (hᵥ - κ * θₙ₊₁ *(qx² +qy²)) [Fourier space] =>
-  // θₙ₊₁ = ( (Δt*hᵥ/ρC) + θₙ) / (1 + (Δt*κ/ρC)(qx² +qy²) )[Fourier space]
+  // θₙ₊₁ = ( (Δt*hᵥ/ρC) + θₙ) / (1 + (Δt*κ/ρC)(qx² +qy²) ) [Fourier space]
   auto scalar_temp = dt / (this->capacity * this->density);
   auto denumenator_fft = Matrix<complex>(size);
   auto numenator_fft = Matrix<complex>(size);
