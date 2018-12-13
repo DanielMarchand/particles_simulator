@@ -96,8 +96,10 @@ protected:
     for (UInt i = 0; i < size; ++i) {
       for (UInt j = 0; j < size; ++j) {
         MaterialPoint p;
-        p.getPositionX() = i;
-        p.getPositionY() = j;
+        //p.getPositionX() = (i - (size -1) / 2) / ((size -1) / 2);
+        //p.getPositionY() = (j - (size -1) / 2) / ((size -1) / 2);;
+        p.getPositionX() = i-size/2;
+        p.getPositionY() = j-size/2;
         p.getTemperature() = test_temp;
         p.getHeatRate() = test_heatrate;
 
@@ -169,7 +171,7 @@ TEST_F(VolumetricHeatSource, temperature_change) {
     for (auto& par : system) {
       auto& mat_par = static_cast<MaterialPoint&>(par);
       if (mat_par.getPositionY() == 0){
-        new_solution[mat_par.getPositionX()] = mat_par.getTemperature();
+        new_solution.push_back(mat_par.getTemperature());
       }
     }
   }
