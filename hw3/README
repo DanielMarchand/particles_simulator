@@ -59,4 +59,6 @@ $ $SP4EHW_ROOT/hw3/ex_inputs/
 Currently we have a very simple hard-coded manner of applying the boundary conditions.
 In the routine "ComputeTemperature::updateParticleTemperatures" we manually set the temperature
 for any particles that happen to lay at the boundary.
-There is a public variable set_bordertemp_zero that can be set to false to disable this behaviour 
+There is a private variable set_bordertemp_zero that can be set to false to disable this behaviour
+The public function ComputeTemperature::setBorderTempFlag(bool flag) can be used after the
+Computetemperature object is constructed to manipulate the flag.
