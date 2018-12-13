@@ -1,6 +1,27 @@
-#TODO describe how the particles are organized in the various objects
+# How are the particles organized in the various objects:
 
-Basic usage and installation:
+There are three types of particles available in the particles code:
+
+* planet particles that are free to move and interact via gravity
+* pingpong particles that are free to move and interact via contact forces
+* materials particles that are fixed in space and can transfer heat to each other
+
+All of the particles have the following relationships:
+
+They all have a factory object that is responsible for setting up the simulation
+and managed the creation and setting up of particles. The simulation is controlled
+by the System object and the evolution of the system is controlled by the SystemEvolution
+object.
+
+They all have a set of unique computes (e.g compute_temperature for materials particles)
+
+For the material particle specifically it has access to an interface to fftw through the
+fft object. It uses a Matrix datastructure (described in the matrix file) to transmit
+information back and forth. The Matrix has specialized index control has managed
+IndexedMatrix and MatrixIndexIterator objects.
+
+
+# Basic usage and installation:
 
 Ensure that both google test and fftw is installed
 
