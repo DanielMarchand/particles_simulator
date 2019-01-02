@@ -35,6 +35,13 @@ add_executable(particles main.cc)
 target_link_libraries(particles part)
 
 ################################################################
+# Pybind11
+################################################################
+add_subdirectory(pybind11)
+#TODO replace with actual pybind module
+#pybind11_add_module(pyexample pyexample.cpp)
+
+################################################################
 # Google test
 ################################################################
 
