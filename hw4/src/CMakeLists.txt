@@ -38,8 +38,12 @@ target_link_libraries(particles part)
 # Pybind11
 ################################################################
 add_subdirectory(pybind11)
-#TODO replace with actual pybind module
-#pybind11_add_module(pyexample pyexample.cpp)
+#Tests to ensure that pybind was installed
+pybind11_add_module(pyexample pyexample.cpp)
+file(
+  COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pybindinstall.py
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
+  )
 
 ################################################################
 # Google test
