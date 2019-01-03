@@ -44,6 +44,7 @@ file(
   COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pybindinstall.py
   DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
   )
+pybind11_add_module(pypart pypart_binding.cpp)
 
 ################################################################
 # Google test
