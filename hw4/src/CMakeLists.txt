@@ -30,6 +30,7 @@ add_library(part
   compute_interaction.cc
   material_points_factory.cc 
   )
+set_target_properties(part PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
 add_executable(particles main.cc)
 target_link_libraries(particles part)
@@ -39,12 +40,16 @@ target_link_libraries(particles part)
 ################################################################
 add_subdirectory(pybind11)
 #Tests to ensure that pybind was installed
-pybind11_add_module(pyexample pyexample.cpp)
+#pybind11_add_module(pypart pypart_binding.cpp)
+#target_link_libraries(pypart PRIVATE pybind11::module part)
+add_library(pypart MODULE pypart_binding.cpp)
+target_link_libraries(pypart PRIVATE pybind11::module part)
+set_target_properties(pypart PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
+                                         SUFFIX "${PYTHON_MODULE_EXTENSION}")
 file(
   COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pybindinstall.py
   DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
   )
-pybind11_add_module(pypart pypart_binding.cpp)
 
 ################################################################
 # Google test

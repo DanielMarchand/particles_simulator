@@ -1,11 +1,23 @@
 #include <functional>
 #include <iostream>
 #include <pybind11/pybind11.h>
+#include "particles_factory_interface.hh" // TODO: file should not be linked this way
+#include "ping_pong_balls_factory.hh"     // TODO: file should not be linked this way
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(pypart, m) {
   m.doc() = "pybinding for the particle codes"; // optional docstring
+
+  py::class_<ParticlesFactoryInterface>(
+      m, "ParticlesFactoryInterface"
+      )
+      .def("getInstance", &ParticlesFactoryInterface::getInstance, py::return_value_policy::reference);
+
+  py::class_<PingPongBallsFactory, ParticlesFactoryInterface>(
+      m, "PingPongBallsFactory"
+      )
+      .def("getInstance", &PingPongBallsFactory::getInstance, py::return_value_policy::reference);
 
 //  TODO replace the following commented to code for the BASE particlefactory class
 //  py::class_<Animal>(
