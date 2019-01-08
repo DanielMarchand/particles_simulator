@@ -1,8 +1,10 @@
 #include <functional>
 #include <iostream>
 #include <pybind11/pybind11.h>
-#include "particles_factory_interface.hh" // TODO: file should not be linked this way
-#include "ping_pong_balls_factory.hh"     // TODO: file should not be linked this way
+#include "particles_factory_interface.hh"
+#include "material_points_factory.hh"
+#include "ping_pong_balls_factory.hh"
+#include "planets_factory.hh"
 
 namespace py = pybind11;
 
@@ -14,10 +16,21 @@ PYBIND11_MODULE(pypart, m) {
       )
       .def("getInstance", &ParticlesFactoryInterface::getInstance, py::return_value_policy::reference);
 
+  py::class_<MaterialPointsFactory, ParticlesFactoryInterface>(
+      m, "MaterialPointsFactory"
+      )
+      .def("getInstance", &MaterialPointsFactory::getInstance, py::return_value_policy::reference);
+
+  py::class_<PlanetsFactory, ParticlesFactoryInterface>(
+      m, "PlanetsFactory"
+      )
+      .def("getInstance", &PlanetsFactory::getInstance, py::return_value_policy::reference);
+
   py::class_<PingPongBallsFactory, ParticlesFactoryInterface>(
       m, "PingPongBallsFactory"
       )
       .def("getInstance", &PingPongBallsFactory::getInstance, py::return_value_policy::reference);
+
 
 //  TODO replace the following commented to code for the BASE particlefactory class
 //  py::class_<Animal>(

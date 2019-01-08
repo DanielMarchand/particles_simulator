@@ -36,22 +36,6 @@ add_executable(particles main.cc)
 target_link_libraries(particles part)
 
 ################################################################
-# Pybind11
-################################################################
-add_subdirectory(pybind11)
-#Tests to ensure that pybind was installed
-#pybind11_add_module(pypart pypart_binding.cpp)
-#target_link_libraries(pypart PRIVATE pybind11::module part)
-add_library(pypart MODULE pypart_binding.cpp)
-target_link_libraries(pypart PRIVATE pybind11::module part)
-set_target_properties(pypart PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
-                                         SUFFIX "${PYTHON_MODULE_EXTENSION}")
-file(
-  COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pybindinstall.py
-  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
-  )
-
-################################################################
 # Google test
 ################################################################
 
@@ -91,6 +75,8 @@ if(USE_FFT)
   set(FFT_LIBRARY_PATH CACHE PATH /usr/lib/x86_64-linux-gnu/)
   find_library (FFT_LIBRARY NAMES "fftw3" PATHS /usr/lib/x86_64-linux-gnu/ ${FFT_LIBRARY_PATH})
   add_library(fft_code compute_temperature.cc)
+  set_target_properties(fft_code PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+
   target_link_libraries (fft_code ${FFT_LIBRARY})
   target_link_libraries (particles fft_code)
   if (GTEST_FOUND)
@@ -103,3 +89,19 @@ if(USE_FFT)
     gtest_discover_tests(test_fft test_heat_equation)
   endif()
 endif()
+
+################################################################
+# Pybind11
+################################################################
+add_subdirectory(pybind11)
+#Tests to ensure that pybind was installed
+#pybind11_add_module(pypart pypart_binding.cpp)
+#target_link_libraries(pypart PRIVATE pybind11::module part)
+add_library(pypart MODULE pypart_binding.cpp)
+target_link_libraries(pypart PRIVATE pybind11::module part fft_code)
+set_target_properties(pypart PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
+                                         SUFFIX "${PYTHON_MODULE_EXTENSION}")
+file(
+  COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pybindinstall.py
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
+  )
