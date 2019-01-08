@@ -12,6 +12,19 @@ std::unique_ptr<Particle> MaterialPointsFactory::createParticle() {
 }
 
 /* -------------------------------------------------------------------------- */
+void MaterialPointsFactory::createDefaultComputes(Real timestep) {
+
+  //TODO make the following variables compatible with existing code
+  //auto compute_temp = std::make_shared<ComputeTemperature>();
+  //compute_temp->getConductivity() = 1.;
+  //compute_temp->getL() = 2.;
+  //compute_temp->getCapacity() = 1.;
+  //compute_temp->getDensity() = 1.;
+  //compute_temp->getDeltat() = timestep;
+  //this->system_evolution->addCompute(compute_temp);
+}
+
+/* -------------------------------------------------------------------------- */
 
 SystemEvolution &
 MaterialPointsFactory::createSimulation(const std::string &fname, Real timestep,
@@ -29,10 +42,14 @@ MaterialPointsFactory::createSimulation(const std::string &fname, Real timestep,
   if (side * side != N)
     throw std::runtime_error("number of particles is not square");
 
-  auto compute_temperature = std::make_shared<ComputeTemperature>();
-  compute_temperature->setDeltaT(timestep);
-  compute_temperature->setBorderTempFlag(border_flag);
-  this->system_evolution->addCompute(compute_temperature);
+  // NOTE: Old version
+  //auto compute_temperature = std::make_shared<ComputeTemperature>();
+  //compute_temperature->setDeltaT(timestep);
+  //compute_temperature->setBorderTempFlag(border_flag);
+  //this->system_evolution->addCompute(compute_temperature);
+
+  // NOTE: New version
+  this->createComputes(timestep);
 
   return *system_evolution;
 }
