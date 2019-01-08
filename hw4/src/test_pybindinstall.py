@@ -1,23 +1,22 @@
 #!/bin/env python3
-import pyexample
-import pytest
+#A few very simple tests to verify correct installation
 
-#A few very simple tests to verify that pybind was installed correctly
+def test_particlefactory():
+    from pypart import ParticlesFactoryInterface
+    ParticlesFactoryInterface.getInstance()
+    return
 
-def test_add():
-    assert pyexample.add(1, 2) == 3
+def test_planetsfactory():
+    from pypart import PlanetsFactory
+    PlanetsFactory.getInstance()
+    return
 
-def test_addwithparams():
-    assert pyexample.add_withparams(j=2, i=1) == 3
+def test_pingpongballsfactory():
+    from pypart import PingPongBallsFactory
+    PingPongBallsFactory.getInstance()
+    return
 
-def test_addwithdefaults():
-    assert pyexample.add_withdefaults() == 3
-
-def test_yopla():
-    assert pyexample.yopla == "yopla"
-
-if __name__ == "__main__":
-    test_add()
-    test_addwithparams()
-    test_addwithdefaults()
-    test_yopla()
+def test_materialpointfactory():
+    from pypart import MaterialPointsFactory 
+    MaterialPointsFactory.getInstance()
+    return
