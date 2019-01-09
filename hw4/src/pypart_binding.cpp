@@ -20,12 +20,7 @@ PYBIND11_MODULE(pypart, m) {
       m, "ParticlesFactoryInterface"
       )
       .def("getInstance", &ParticlesFactoryInterface::getInstance,
-           py::return_value_policy::reference)
-      .def("createSimulation",
-        py::overload_cast<const std::string&, Real, bool>(
-          &ParticlesFactoryInterface::createSimulation),
-             py::return_value_policy::reference
-             );
+           py::return_value_policy::reference);
 
   py::class_<MaterialPointsFactory, ParticlesFactoryInterface>(
       m, "MaterialPointsFactory"
@@ -45,7 +40,12 @@ PYBIND11_MODULE(pypart, m) {
   py::class_<PingPongBallsFactory, ParticlesFactoryInterface>(
       m, "PingPongBallsFactory"
       )
-      .def("getInstance", &PingPongBallsFactory::getInstance, py::return_value_policy::reference);
+      .def("getInstance", &PingPongBallsFactory::getInstance, py::return_value_policy::reference)
+      .def("createSimulation",
+        py::overload_cast<const std::string&, Real, bool>(
+          &PingPongBallsFactory::createSimulation),
+             py::return_value_policy::reference
+             );
 
 
 //  TODO replace the following commented to code for the BASE particlefactory class
