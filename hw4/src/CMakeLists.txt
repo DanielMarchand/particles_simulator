@@ -102,6 +102,6 @@ target_link_libraries(pypart PRIVATE pybind11::module part fft_code)
 set_target_properties(pypart PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
                                          SUFFIX "${PYTHON_MODULE_EXTENSION}")
 file(
-  COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pybindinstall.py
+  COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_pybind.py
   DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/
   )
