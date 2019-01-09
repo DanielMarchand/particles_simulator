@@ -1,6 +1,7 @@
 #include <functional>
 #include <iostream>
 #include <pybind11/pybind11.h>
+#include "system_evolution.hh"
 #include "particles_factory_interface.hh"
 #include "material_points_factory.hh"
 #include "ping_pong_balls_factory.hh"
@@ -10,6 +11,10 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(pypart, m) {
   m.doc() = "pybinding for the particle codes"; // optional docstring
+
+  py::class_<SystemEvolution>(
+      m, "SystemEvolution"
+      );
 
   py::class_<ParticlesFactoryInterface>(
       m, "ParticlesFactoryInterface"
