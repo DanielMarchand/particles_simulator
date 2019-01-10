@@ -33,6 +33,10 @@ PYBIND11_MODULE(pypart, m) {
   py::class_<MaterialPointsFactory, ParticlesFactoryInterface>(
       m, "MaterialPointsFactory")
       .def("getInstance", &MaterialPointsFactory::getInstance,
+           py::return_value_policy::reference)
+      .def("createSimulation",
+           py::overload_cast<const std::string &, Real, py::function>(
+               &MaterialPointsFactory::createSimulation<py::function>),
            py::return_value_policy::reference);
 
   py::class_<PlanetsFactory, ParticlesFactoryInterface>(m, "PlanetsFactory")
