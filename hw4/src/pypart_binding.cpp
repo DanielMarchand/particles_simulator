@@ -22,7 +22,11 @@ PYBIND11_MODULE(pypart, m) {
       .def("addCompute", [](SystemEvolution &system_evolution,
                             const std::shared_ptr<Compute> &compute) {
         system_evolution.addCompute(compute);
-      });
+      })
+    .def("setNSteps", &SystemEvolution::setNSteps)
+    .def("setDumpFreq", &SystemEvolution::setDumpFreq)
+    .def("evolve", &SystemEvolution::evolve)
+    ;
 
   py::class_<ParticlesFactoryInterface,
              std::shared_ptr<ParticlesFactoryInterface>>(
