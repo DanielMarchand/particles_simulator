@@ -9,8 +9,7 @@
 #include <iostream>
 #include <pybind11/chrono.h>
 #include <pybind11/functional.h>
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
+#include <pybind11/pybind11.h> #include <pybind11/stl.h>
 
 namespace py = pybind11;
 
@@ -72,6 +71,9 @@ PYBIND11_MODULE(pypart, m) {
                     &ComputeTemperature::setDensity)
       .def_property("deltat", &ComputeTemperature::getDeltaT,
                     &ComputeTemperature::setDeltaT)
+    .def_property("length", &ComputeTemperature::getLength,
+                    &ComputeTemperature::setLength)
+
       .def("compute", &ComputeTemperature::compute);
 
   //  TODO replace the following commented to code for the BASE particlefactory
