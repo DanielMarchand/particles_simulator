@@ -13,31 +13,32 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-namespace py = pybind11;
 
+namespace py = pybind11;
+//PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>, true);
 PYBIND11_MODULE(pypart, m) {
   m.doc() = "pybinding for the particle codes"; // optional docstring
 
-  //py::class_<SystemEvolution>(m, "SystemEvolution")
-  //    .def("addCompute", [](SystemEvolution &system_evolution,
-  //                          const std::shared_ptr<Compute> &compute) {
-  //      system_evolution.addCompute(compute);
-  //    });
+  py::class_<SystemEvolution, std::shared_ptr<SystemEvolution>>(m, "SystemEvolution")
+      .def("addCompute", [](SystemEvolution &system_evolution,
+                            const std::shared_ptr<Compute> &compute) {
+        system_evolution.addCompute(compute);
+      })
+    .def("setNSteps", &SystemEvolution::setNSteps)
+    .def("setDumpFreq", &SystemEvolution::setDumpFreq)
+    .def("evolve", &SystemEvolution::evolve)
+    ;
 
-  py::class_<SystemEvolution>(m, "SystemEvolution")
-      .def("addCompute",
-           py::overload_cast<const std::shared_ptr<Compute>&>(
-               &SystemEvolution::addCompute)
-               );
-
-  py::class_<ParticlesFactoryInterface>(m, "ParticlesFactoryInterface")
+  py::class_<ParticlesFactoryInterface,
+             std::shared_ptr<ParticlesFactoryInterface>>(
+      m, "ParticlesFactoryInterface")
       .def("getInstance", &ParticlesFactoryInterface::getInstance,
            py::return_value_policy::reference)
       .def_property("system_evolution",
                     &ParticlesFactoryInterface::getSystemEvolution,
                     &ParticlesFactoryInterface::setSystemEvolution);
 
-  py::class_<MaterialPointsFactory, ParticlesFactoryInterface>(
+  py::class_<MaterialPointsFactory, std::shared_ptr<MaterialPointsFactory>, ParticlesFactoryInterface>(
       m, "MaterialPointsFactory")
       .def("getInstance", &MaterialPointsFactory::getInstance,
            py::return_value_policy::reference)
@@ -46,7 +47,8 @@ PYBIND11_MODULE(pypart, m) {
                &MaterialPointsFactory::createSimulation<py::function>),
            py::return_value_policy::reference);
 
-  py::class_<PlanetsFactory, ParticlesFactoryInterface>(m, "PlanetsFactory")
+  py::class_<PlanetsFactory, std::shared_ptr<PlanetsFactory>, ParticlesFactoryInterface>(
+              m, "PlanetsFactory")
       .def("getInstance", &PlanetsFactory::getInstance,
            py::return_value_policy::reference)
       .def("createSimulation",
@@ -54,7 +56,7 @@ PYBIND11_MODULE(pypart, m) {
                &ParticlesFactoryInterface::createSimulation),
            py::return_value_policy::reference);
 
-  py::class_<PingPongBallsFactory, ParticlesFactoryInterface>(
+  py::class_<PingPongBallsFactory, std::shared_ptr<PingPongBallsFactory>, ParticlesFactoryInterface>(
       m, "PingPongBallsFactory")
       .def("getInstance", &PingPongBallsFactory::getInstance,
            py::return_value_policy::reference)
@@ -63,12 +65,9 @@ PYBIND11_MODULE(pypart, m) {
                &PingPongBallsFactory::createSimulation),
            py::return_value_policy::reference);
 
-  py::class_<Compute>(m, "Compute");
+  py::class_<Compute, std::shared_ptr<Compute>>(m, "Compute");
 
-  py::class_<ComputeTemperature, Compute>(
-      m, "ComputeTemperature",
-      py::dynamic_attr() // to allow new members to be created dynamically
-      )
+  py::class_<ComputeTemperature, std::shared_ptr<ComputeTemperature>, Compute>(m, "ComputeTemperature")
       .def(py::init<>())
       // give read write access through acessors :
       .def_property("conductivity", &ComputeTemperature::getConductivityK,
@@ -79,11 +78,11 @@ PYBIND11_MODULE(pypart, m) {
                     &ComputeTemperature::setDensity)
       .def_property("deltat", &ComputeTemperature::getDeltaT,
                     &ComputeTemperature::setDeltaT)
-    .def_property("length", &ComputeTemperature::getLength,
+      .def_property("length", &ComputeTemperature::getLength,
                     &ComputeTemperature::setLength)
       .def("compute", &ComputeTemperature::compute);
 
-  py::class_<CsvWriter, Compute>(
+  py::class_<CsvWriter, std::shared_ptr<CsvWriter>, Compute>(
       m, "CsvWriter")
       .def(py::init<const std::string &>())
       .def("write", &CsvWriter::write);
@@ -108,15 +107,15 @@ PYBIND11_MODULE(pypart, m) {
   //          "name_property", &Animal::setName,
   //          &Animal::getName); // give read write access through acessors
 
-  //  TODO replace the following code for each daughter class of particlefactory
-  //  (pingpong, planet, ..) py::class_<Dog, Animal>(m, "Dog")
+  //  TODO replace the following code for each daughter class of
+  //  particlefactory (pingpong, planet, ..) py::class_<Dog, Animal>(m, "Dog")
   //      .def(py::init<const std::string &>() // constructor
   //
   //           )
   //      .def("hasNiche", &Dog::hasNiche) // method only in Dog;
   //      .def("overloadedFoo",
-  //           py::overload_cast<int>(&Dog::overloadedFoo)) // overloading with
-  //           int
+  //           py::overload_cast<int>(&Dog::overloadedFoo)) // overloading
+  //           with int
   //      .def("overloadedFoo",
   //           py::overload_cast<const std::string>(
   //               &Dog::overloadedFoo, py::const_)) // overloading with const

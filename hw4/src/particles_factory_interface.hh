@@ -30,7 +30,7 @@ public:
   //! get reference to the system evolution
   SystemEvolution& getSystemEvolution() { return *system_evolution; };
 
-  void setSystemEvolution (std::shared_ptr<SystemEvolution> &system_evolution){
+  void setSystemEvolution(std::shared_ptr<SystemEvolution> &system_evolution) {
     this->system_evolution = system_evolution;
   }
 
