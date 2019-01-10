@@ -1,3 +1,4 @@
+#include "csv_writer.hh"
 #include "compute.hh"
 #include "compute_temperature.hh"
 #include "material_points_factory.hh"
@@ -18,6 +19,8 @@ namespace py = pybind11;
 PYBIND11_MODULE(pypart, m) {
   m.doc() = "pybinding for the particle codes"; // optional docstring
 
+  py::class_<System>(m, "System");
+
   py::class_<SystemEvolution, std::shared_ptr<SystemEvolution>>(m, "SystemEvolution")
       .def("addCompute", [](SystemEvolution &system_evolution,
                             const std::shared_ptr<Compute> &compute) {
@@ -26,6 +29,7 @@ PYBIND11_MODULE(pypart, m) {
     .def("setNSteps", &SystemEvolution::setNSteps)
     .def("setDumpFreq", &SystemEvolution::setDumpFreq)
     .def("evolve", &SystemEvolution::evolve)
+    .def("getSystem", &SystemEvolution::getSystem)
     ;
 
   py::class_<ParticlesFactoryInterface,
@@ -77,6 +81,6 @@ PYBIND11_MODULE(pypart, m) {
                     &ComputeTemperature::setDensity)
       .def_property("deltat", &ComputeTemperature::getDeltaT,
                     &ComputeTemperature::setDeltaT)
-      .def_property("length", &ComputeTemperature::getLength,
+      .def_property("L", &ComputeTemperature::getLength,
                     &ComputeTemperature::setLength)
       .def("compute", &ComputeTemperature::compute);

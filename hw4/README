@@ -1,0 +1,25 @@
+# Basic usage and installation:
+$ git clone ssh://git@c4science.ch/diffusion/7584/sp-e_hw.git $SP4EHW_ROOT
+$ cd $SP4EHW_ROOT/hw4/src
+
+# You will then need to pull the pybind11 submodule:
+$ git submodule init && git submodule update
+
+
+$ mkdir build && cd build && ccmake ..
+$ make
+
+Confirm proper installation by running the following tests:
+
+$ ./test_fft
+$ ./test_heat_equation
+$ ./test_kepler
+$ pytest ./test_pybind.py
+
+You may then the main.py code to run the heat simulation:
+
+$ mkdir dumps
+$ main.py NSTEPS FREQ FILENAME PARTICLE_TYPE TIMESTEP
+
+A sample input file 'sample_input.txt' can be found in hw4/src
+New inputs can be generated with the 'generate_heatequation.py' script
