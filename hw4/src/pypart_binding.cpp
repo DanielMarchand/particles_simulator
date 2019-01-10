@@ -68,6 +68,8 @@ PYBIND11_MODULE(pypart, m) {
                     &ComputeTemperature::setDensity)
       .def_property("deltat", &ComputeTemperature::getDeltaT,
                     &ComputeTemperature::setDeltaT)
+    .def_property("length", &ComputeTemperature::getLength,
+                    &ComputeTemperature::setLength)
 
       .def("compute", &ComputeTemperature::compute);
 

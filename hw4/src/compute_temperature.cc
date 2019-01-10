@@ -19,6 +19,11 @@ void ComputeTemperature::setCapacity(const Real &capacity) {
   this->capacity = capacity;
 }
 
+void ComputeTemperature::setLength(const Real &length) {
+
+  this->length = length;
+}
+
 void ComputeTemperature::setBorderTempFlag(bool set_bordertemp_zero){
 
   this->set_bordertemp_zero = set_bordertemp_zero;
@@ -30,7 +35,7 @@ Real ComputeTemperature::getDeltaT() { return this->dt; }
 
 Real ComputeTemperature::getConductivityK() {
 
-  return this->conducivityK;
+  return this->conducivityK ;
 }
 
 Real ComputeTemperature::getDensity() {
@@ -43,6 +48,9 @@ Real ComputeTemperature::getCapacity() {
   return this->capacity ;
 }
 
+Real ComputeTemperature::getLength() {
+  return this->length ;
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -77,7 +85,8 @@ void ComputeTemperature::compute(System &system) {
                                   temperatures_fft);
 
   denumenator_fft = scalarmatrixAdd(
-      1.0, scalarmatrixMult(scalar_temp * this->conducivityK, squared_freqs));
+      1.0, scalarmatrixMult(scalar_temp * this->conducivityK,
+                            scalarmatrixMult(1/this->length, squared_freqs)));
 
   temperatures_fft = matrixmatrixElementDivide(numenator_fft, denumenator_fft);
   temperatures_matrix = FFT::itransform(temperatures_fft);

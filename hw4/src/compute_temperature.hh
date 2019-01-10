@@ -16,13 +16,14 @@ public:
   void setConductivityK(const Real &ConductivityK);
   void setDensity(const Real &density);
   void setCapacity(const Real &capacity);
+  void setLength(const Real &legnth);
   void setBorderTempFlag(bool set_bordertemp_zero);
 
   Real getDeltaT();
   Real getConductivityK();
   Real getDensity();
   Real getCapacity();
-
+  Real getLength();
   inline void updateParticleTemperatures(System &system,
                                          Matrix<complex> temperature_matrix);
   inline Matrix<complex> makeMatrix(const std::vector<Real> &vec);
@@ -32,6 +33,7 @@ private:
   Real conducivityK{1.0};
   Real density{1.0};
   Real capacity{1.0};
+  Real length{1.0};
   bool set_bordertemp_zero{true};
 };
 
