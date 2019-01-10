@@ -30,7 +30,9 @@ public:
   SystemEvolution& createSimulation(const std::string& fname, Real timestep,
                                     Func func) {
     createComputes = [&](Real timestep) { func(*this, timestep); };
-    return this->createSimulation(fname, timestep);
+
+    // Always have border_flag set to false when using the python interface
+    return this->createSimulation(fname, timestep, false);
   }
 
   void createDefaultComputes(Real timestep);
