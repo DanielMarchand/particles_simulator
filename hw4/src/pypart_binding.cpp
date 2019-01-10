@@ -85,7 +85,7 @@ PYBIND11_MODULE(pypart, m) {
                     &ComputeTemperature::setLength)
       .def("compute", &ComputeTemperature::compute);
 
-  py::class_<CsvWriter, Compute>(m, "CsvWriter")
+  py::class_<CsvWriter, std::shared_ptr<CsvWriter>, Compute>(m, "CsvWriter")
       .def(py::init<const std::string &>())
       .def("write", &CsvWriter::write);
 }
