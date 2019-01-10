@@ -34,8 +34,7 @@ from pypart import MaterialPointsFactory
 def createComputes(self, timestep):                          
     compute_temp = ComputeTemperature()                      
     compute_temp.conductivity = 1                            
-    # TODO: adjust c++ code to have length property          
-    # compute_temp.L = 2                                     
+    compute_temp.L = 2                                     
     compute_temp.capacity = 1                                
     compute_temp.density = 1                                 
     compute_temp.deltat = 1                                  
