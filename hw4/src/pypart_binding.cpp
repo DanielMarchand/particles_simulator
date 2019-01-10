@@ -1,3 +1,4 @@
+#include "csv_writer.hh"
 #include "compute.hh"
 #include "compute_temperature.hh"
 #include "material_points_factory.hh"
@@ -9,18 +10,25 @@
 #include <iostream>
 #include <pybind11/chrono.h>
 #include <pybind11/functional.h>
-#include <pybind11/pybind11.h> #include <pybind11/stl.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(pypart, m) {
   m.doc() = "pybinding for the particle codes"; // optional docstring
 
+  //py::class_<SystemEvolution>(m, "SystemEvolution")
+  //    .def("addCompute", [](SystemEvolution &system_evolution,
+  //                          const std::shared_ptr<Compute> &compute) {
+  //      system_evolution.addCompute(compute);
+  //    });
+
   py::class_<SystemEvolution>(m, "SystemEvolution")
-      .def("addCompute", [](SystemEvolution &system_evolution,
-                            const std::shared_ptr<Compute> &compute) {
-        system_evolution.addCompute(compute);
-      });
+      .def("addCompute",
+           py::overload_cast<const std::shared_ptr<Compute>&>(
+               &SystemEvolution::addCompute)
+               );
 
   py::class_<ParticlesFactoryInterface>(m, "ParticlesFactoryInterface")
       .def("getInstance", &ParticlesFactoryInterface::getInstance,
@@ -73,8 +81,12 @@ PYBIND11_MODULE(pypart, m) {
                     &ComputeTemperature::setDeltaT)
     .def_property("length", &ComputeTemperature::getLength,
                     &ComputeTemperature::setLength)
-
       .def("compute", &ComputeTemperature::compute);
+
+  py::class_<CsvWriter, Compute>(
+      m, "CsvWriter")
+      .def(py::init<const std::string &>())
+      .def("write", &CsvWriter::write);
 
   //  TODO replace the following commented to code for the BASE particlefactory
   //  class py::class_<Animal>(
