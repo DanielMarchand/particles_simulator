@@ -25,7 +25,10 @@ PYBIND11_MODULE(pypart, m) {
 
   py::class_<ParticlesFactoryInterface>(m, "ParticlesFactoryInterface")
       .def("getInstance", &ParticlesFactoryInterface::getInstance,
-           py::return_value_policy::reference);
+           py::return_value_policy::reference)
+      .def_property("system_evolution",
+                    &ParticlesFactoryInterface::getSystemEvolution,
+                    &ParticlesFactoryInterface::setSystemEvolution);
 
   py::class_<MaterialPointsFactory, ParticlesFactoryInterface>(
       m, "MaterialPointsFactory")

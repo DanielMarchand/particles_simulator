@@ -30,14 +30,14 @@ public:
   //! get reference to the system evolution
   SystemEvolution& getSystemEvolution() { return *system_evolution; };
 
-  /*void setSystemEvolution (std::unique_ptr<SystemEvolution> &system_evolution){
-    this->system_evolution = std::make_unique<>system_evolution;
-    }*/
+  void setSystemEvolution (std::shared_ptr<SystemEvolution> &system_evolution){
+    this->system_evolution = system_evolution;
+  }
 
   // Members
 protected:
   std::vector<Particle *> list_particles;
-  std::unique_ptr<SystemEvolution> system_evolution = nullptr;
+  std::shared_ptr<SystemEvolution> system_evolution = nullptr;
 
   // Standard pointer because constructor is protected (cannot use make_unique)
   static ParticlesFactoryInterface *factory;
