@@ -1,6 +1,6 @@
 #!/bin/env python3
 #A few very simple tests to verify correct installation
-import tempfile 
+import tempfile
 
 def test_particlefactory():
     from pypart import ParticlesFactoryInterface

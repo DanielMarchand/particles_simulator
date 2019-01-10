@@ -2,19 +2,19 @@
 
 /* -------------------------------------------------------------------------- */
 
-void ComputeTemperature::setDeltaT(Real dt) { this->dt = dt; }
+void ComputeTemperature::setDeltaT(const Real &dt) { this->dt = dt; }
 
-void ComputeTemperature::setDeltaConductivityK(Real conductivityK) {
+void ComputeTemperature::setConductivityK(const Real &conductivityK) {
 
   this->conducivityK = conductivityK;
 }
 
-void ComputeTemperature::setDeltaDensity(Real density) {
+void ComputeTemperature::setDensity(const Real &density) {
 
   this->density = density;
 }
 
-void ComputeTemperature::setDeltaCapacity(Real capacity) {
+void ComputeTemperature::setCapacity(const Real &capacity) {
 
   this->capacity = capacity;
 }
@@ -24,6 +24,26 @@ void ComputeTemperature::setBorderTempFlag(bool set_bordertemp_zero){
   this->set_bordertemp_zero = set_bordertemp_zero;
 
 }
+
+
+Real ComputeTemperature::getDeltaT() { return this->dt; }
+
+Real ComputeTemperature::getConductivityK() {
+
+  return this->conducivityK;
+}
+
+Real ComputeTemperature::getDensity() {
+
+  return this->density ;
+}
+
+Real ComputeTemperature::getCapacity() {
+
+  return this->capacity ;
+}
+
+
 
 /* -------------------------------------------------------------------------- */
 

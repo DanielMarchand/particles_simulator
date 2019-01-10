@@ -12,11 +12,17 @@ class ComputeTemperature : public Compute {
 
 public:
   void compute(System &system) override;
-  void setDeltaT(Real dt);
-  void setDeltaConductivityK(Real ConductivityK);
-  void setDeltaDensity(Real density);
-  void setDeltaCapacity(Real capacity);
+  void setDeltaT(const Real &dt);
+  void setConductivityK(const Real &ConductivityK);
+  void setDensity(const Real &density);
+  void setCapacity(const Real &capacity);
   void setBorderTempFlag(bool set_bordertemp_zero);
+
+  Real getDeltaT();
+  Real getConductivityK();
+  Real getDensity();
+  Real getCapacity();
+
   inline void updateParticleTemperatures(System &system,
                                          Matrix<complex> temperature_matrix);
   inline Matrix<complex> makeMatrix(const std::vector<Real> &vec);

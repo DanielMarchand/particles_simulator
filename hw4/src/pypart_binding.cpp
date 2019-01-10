@@ -1,88 +1,110 @@
-#include <functional>
-#include <iostream>
-#include <pybind11/pybind11.h>
-#include "system_evolution.hh"
-#include "particles_factory_interface.hh"
+#include "compute.hh"
+#include "compute_temperature.hh"
 #include "material_points_factory.hh"
+#include "particles_factory_interface.hh"
 #include "ping_pong_balls_factory.hh"
 #include "planets_factory.hh"
+#include "system_evolution.hh"
+#include <functional>
+#include <iostream>
+#include <pybind11/chrono.h>
+#include <pybind11/functional.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(pypart, m) {
   m.doc() = "pybinding for the particle codes"; // optional docstring
 
-  py::class_<SystemEvolution>(
-      m, "SystemEvolution"
-      );
+  py::class_<SystemEvolution>(m, "SystemEvolution")
+      .def("addCompute", [](SystemEvolution &system_evolution,
+                            const std::shared_ptr<Compute> &compute) {
+        system_evolution.addCompute(compute);
+      });
 
-  py::class_<ParticlesFactoryInterface>(
-      m, "ParticlesFactoryInterface"
-      )
+  py::class_<ParticlesFactoryInterface>(m, "ParticlesFactoryInterface")
       .def("getInstance", &ParticlesFactoryInterface::getInstance,
            py::return_value_policy::reference);
 
   py::class_<MaterialPointsFactory, ParticlesFactoryInterface>(
-      m, "MaterialPointsFactory"
-      )
-      .def("getInstance", &MaterialPointsFactory::getInstance, py::return_value_policy::reference);
+      m, "MaterialPointsFactory")
+      .def("getInstance", &MaterialPointsFactory::getInstance,
+           py::return_value_policy::reference);
 
-  py::class_<PlanetsFactory, ParticlesFactoryInterface>(
-      m, "PlanetsFactory"
-      )
-      .def("getInstance", &PlanetsFactory::getInstance, py::return_value_policy::reference)
+  py::class_<PlanetsFactory, ParticlesFactoryInterface>(m, "PlanetsFactory")
+      .def("getInstance", &PlanetsFactory::getInstance,
+           py::return_value_policy::reference)
       .def("createSimulation",
-        py::overload_cast<const std::string&, Real, bool>(
-          &ParticlesFactoryInterface::createSimulation),
-             py::return_value_policy::reference
-             );
+           py::overload_cast<const std::string &, Real, bool>(
+               &ParticlesFactoryInterface::createSimulation),
+           py::return_value_policy::reference);
 
   py::class_<PingPongBallsFactory, ParticlesFactoryInterface>(
-      m, "PingPongBallsFactory"
-      )
-      .def("getInstance", &PingPongBallsFactory::getInstance, py::return_value_policy::reference)
+      m, "PingPongBallsFactory")
+      .def("getInstance", &PingPongBallsFactory::getInstance,
+           py::return_value_policy::reference)
       .def("createSimulation",
-        py::overload_cast<const std::string&, Real, bool>(
-          &PingPongBallsFactory::createSimulation),
-             py::return_value_policy::reference
-             );
+           py::overload_cast<const std::string &, Real, bool>(
+               &PingPongBallsFactory::createSimulation),
+           py::return_value_policy::reference);
 
+  py::class_<Compute>(m, "Compute");
 
-//  TODO replace the following commented to code for the BASE particlefactory class
-//  py::class_<Animal>(
-//      m, "Animal",
-//      py::dynamic_attr() // to allow new members to be created dynamically
-//      )
-//      .def(py::init<const std::string &>(), // constructor
-//           py::arg("name") = "puppy")       // with a default
-//      .def("scream", &Animal::scream)       // scream method
-//      .def("python_extension",              // extension method with a lambda
-//           [](Animal &a) { std::cout << a.name << std::endl; })
-//      .def("__repr__", // method to allow being printed
-//           [](const Animal &a) { return "<Animal: " + a.name + ">"; })
-//      .def_readwrite(
-//          "name", &Animal::name) // give read write access (property) to member
-//      .def_property(
-//          "name_property", &Animal::setName,
-//          &Animal::getName); // give read write access through acessors
+  py::class_<ComputeTemperature, Compute>(
+      m, "ComputeTemperature",
+      py::dynamic_attr() // to allow new members to be created dynamically
+      )
+      .def(py::init<>())
+      // give read write access through acessors :
+      .def_property("conductivity", &ComputeTemperature::getConductivityK,
+                    &ComputeTemperature::setConductivityK)
+      .def_property("capacity", &ComputeTemperature::getCapacity,
+                    &ComputeTemperature::setCapacity)
+      .def_property("density", &ComputeTemperature::getDensity,
+                    &ComputeTemperature::setDensity)
+      .def_property("deltat", &ComputeTemperature::getDeltaT,
+                    &ComputeTemperature::setDeltaT)
 
-//  TODO replace the following code for each daughter class of particlefactory (pingpong, planet, ..)
-//  py::class_<Dog, Animal>(m, "Dog")
-//      .def(py::init<const std::string &>() // constructor
-//
-//           )
-//      .def("hasNiche", &Dog::hasNiche) // method only in Dog;
-//      .def("overloadedFoo",
-//           py::overload_cast<int>(&Dog::overloadedFoo)) // overloading with int
-//      .def("overloadedFoo",
-//           py::overload_cast<const std::string>(
-//               &Dog::overloadedFoo, py::const_)) // overloading with const
-//      ;
+      .def("compute", &ComputeTemperature::compute);
 
+  //  TODO replace the following commented to code for the BASE particlefactory
+  //  class py::class_<Animal>(
+  //      m, "Animal",
+  //      py::dynamic_attr() // to allow new members to be created dynamically
+  //      )
+  //      .def(py::init<const std::string &>(), // constructor
+  //           py::arg("name") = "puppy")       // with a default
+  //      .def("scream", &Animal::scream)       // scream method
+  //      .def("python_extension",              // extension method with a
+  //      lambda
+  //           [](Animal &a) { std::cout << a.name << std::endl; })
+  //      .def("__repr__", // method to allow being printed
+  //           [](const Animal &a) { return "<Animal: " + a.name + ">"; })
+  //      .def_readwrite(
+  //          "name", &Animal::name) // give read write access (property) to
+  //          member
+  //      .def_property(
+  //          "name_property", &Animal::setName,
+  //          &Animal::getName); // give read write access through acessors
+
+  //  TODO replace the following code for each daughter class of particlefactory
+  //  (pingpong, planet, ..) py::class_<Dog, Animal>(m, "Dog")
+  //      .def(py::init<const std::string &>() // constructor
+  //
+  //           )
+  //      .def("hasNiche", &Dog::hasNiche) // method only in Dog;
+  //      .def("overloadedFoo",
+  //           py::overload_cast<int>(&Dog::overloadedFoo)) // overloading with
+  //           int
+  //      .def("overloadedFoo",
+  //           py::overload_cast<const std::string>(
+  //               &Dog::overloadedFoo, py::const_)) // overloading with const
+  //      ;
 }
 
-//TODO delete this old code once the module is in better shape
-//PYBIND11_MODULE(pypart, m) {
+// TODO delete this old code once the module is in better shape
+// PYBIND11_MODULE(pypart, m) {
 //  m.doc() = "pybind pyexample plugin"; // optional docstring
 //
 //  m.def("add",                            // name in python
@@ -94,7 +116,8 @@ PYBIND11_MODULE(pypart, m) {
 //        py::arg("j")  // naming second argument
 //  );
 //
-//  m.def("add_withdefaults", &add, "A function adding two numbers with defaults",
+//  m.def("add_withdefaults", &add, "A function adding two numbers with
+//  defaults",
 //        py::arg("i") = 1, // with default argument
 //        py::arg("j") = 2  // with default argument
 //  );
@@ -132,7 +155,8 @@ PYBIND11_MODULE(pypart, m) {
 //      .def("__repr__", // method to allow being printed
 //           [](const Animal &a) { return "<Animal: " + a.name + ">"; })
 //      .def_readwrite(
-//          "name", &Animal::name) // give read write access (property) to member
+//          "name", &Animal::name) // give read write access (property) to
+//          member
 //      .def_property(
 //          "name_property", &Animal::setName,
 //          &Animal::getName); // give read write access through acessors
@@ -143,7 +167,8 @@ PYBIND11_MODULE(pypart, m) {
 //           )
 //      .def("hasNiche", &Dog::hasNiche) // method only in Dog;
 //      .def("overloadedFoo",
-//           py::overload_cast<int>(&Dog::overloadedFoo)) // overloading with int
+//           py::overload_cast<int>(&Dog::overloadedFoo)) // overloading with
+//           int
 //      .def("overloadedFoo",
 //           py::overload_cast<const std::string>(
 //               &Dog::overloadedFoo, py::const_)) // overloading with const
