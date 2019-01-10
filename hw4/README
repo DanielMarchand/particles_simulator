@@ -23,3 +23,29 @@ $ main.py NSTEPS FREQ FILENAME PARTICLE_TYPE TIMESTEP
 
 A sample input file 'sample_input.txt' can be found in hw4/src
 New inputs can be generated with the 'generate_heatequation.py' script
+
+Q 1.2 "In class MaterialPointFactory, createSimulation function has been overloaded to take functor as one of its argument.
+Comment on what this function is doing?"
+
+"MaterialPointsFactory"s "createSimulation" method takes in a templated functor, "Func" as an argument. This argument
+is used by the pybind code such that the "createComputes" object in the python code is passed directly through to the
+templated Func. The core of the templated "createSimulation" generates a "createComputes" using the templated c++ function.
+By passing *this as an argument into the templated "Func" we can imitate the same functionality as "self" in python.
+This, in turn, allows object to collect all the assigned attributes such as conductivity, density or L. This then returns
+a c++ "createComputes" function that then may be used to creat the compute settings.
+
+Q 2.2 "How will you ensure the references to Compute objects type are correctly managed in the python bindings?
+
+The issue that make "ComputeTemperature" object in "pybind" is that we need to pass its reference as a parameter to the
+"addCompute" function of "SystemEvolution" class. On the other hand, the default holder policy for pybind objects is
+unique_ptr which means that python would lose objects ownership as passes it to a c++ function as a parameter which is
+undesired and by default does not let us pass a reference of a c++ object as a parameter in a python environment. In order to
+resolve this issue one should customized the holder of the objects in "pybind" from unique_ptr to shared_ptr as described in:
+
+https://www.google.com/url?q=https://pybind11.readthedocs.io/en/stable/advanced/smart_ptrs.html?highlight%3Dholder&sa=D&source=hangouts&ust=1547216486787000&usg=AFQjCNGyKryrLufmSuNbSDrV25GUMzXK5A.
+
+It is done in pypart_pybind.cpp as following:
+
+   py::class_<Compute, std::shared_ptr<Compute>>(m, "Compute");
+
+This enables a user to pass a reference of a "Compute" object to a function within python environment.
