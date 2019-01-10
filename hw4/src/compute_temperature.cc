@@ -86,7 +86,8 @@ void ComputeTemperature::compute(System &system) {
 
   denumenator_fft = scalarmatrixAdd(
       1.0, scalarmatrixMult(scalar_temp * this->conducivityK,
-                            scalarmatrixMult(1/this->length, squared_freqs)));
+                            scalarmatrixMult(1 / (this->length * this->length),
+                                             squared_freqs)));
 
   temperatures_fft = matrixmatrixElementDivide(numenator_fft, denumenator_fft);
   temperatures_matrix = FFT::itransform(temperatures_fft);
