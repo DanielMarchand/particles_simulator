@@ -72,7 +72,6 @@ PYBIND11_MODULE(pypart, m) {
                     &ComputeTemperature::setDensity)
       .def_property("deltat", &ComputeTemperature::getDeltaT,
                     &ComputeTemperature::setDeltaT)
-
       .def("compute", &ComputeTemperature::compute);
 
   //  TODO replace the following commented to code for the BASE particlefactory
