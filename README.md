@@ -27,7 +27,7 @@ approximate pi to arbitrary precision.
 
 # hw3-heateqn_fftw 
 Simulates a heat transfer equation making use of FFTW3. 
-![fftw_heat_ex](https://github.com/DanielMarchand/particles_simulator/ex_animations/fftw_heat.gif)
+![fftw_heat_ex](https://github.com/DanielMarchand/particles_simulator/blob/master/ex_animations/fftw_heat.gif)
 
 
 # hw4-particles_pybind
