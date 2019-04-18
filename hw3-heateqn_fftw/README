@@ -1,26 +1,3 @@
-# How are the particles organized in the various objects:
-
-There are three types of particles available in the particles code:
-
-* planet particles that are free to move and interact via gravity
-* pingpong particles that are free to move and interact via contact forces
-* materials particles that are fixed in space and can transfer heat to each other
-
-All of the particles have the following relationships:
-
-They all have a factory object that is responsible for setting up the simulation
-and managed the creation and setting up of particles. The simulation is controlled
-by the System object and the evolution of the system is controlled by the SystemEvolution
-object.
-
-They all have a set of unique computes (e.g compute_temperature for materials particles)
-
-For the material particle specifically it has access to an interface to fftw through the
-fft object. It uses a Matrix datastructure (described in the matrix file) to transmit
-information back and forth. The Matrix has specialized index control has managed
-IndexedMatrix and MatrixIndexIterator objects.
-
-
 # Basic usage and installation:
 
 Ensure that both google test and fftw is installed
@@ -40,12 +17,12 @@ $ ./test_kepler
 
 To generate a set of initial data a python script 'generate_heatequation.py' is provided
 
-$ $SP4EHW_ROOT/hw3/src generate_heatequation.py <resolution> <heat radius> <output file>
+$ $HW3/src generate_heatequation.py <resolution> <heat radius> <output file>
 
 To run the code execute the following:
 
 $ mkdir dumps
-$ $SP4EHW_ROOT/hw3/src/build/particles <n timesteps> <dump freq> <input file> material_point <delt>
+$ $HW3/src/build/particles <n timesteps> <dump freq> <input file> material_point <delt>
 
 To visualize the output from scratch you may run the following steps:
 
@@ -62,7 +39,7 @@ To visualize the output from scratch you may run the following steps:
 
 You may also use the predefined paraview state file found at:
 
-  $SP4EHW_ROOT/hw3/ex_inputs/paraviewer.pvsm
+  $HW3/ex_inputs/paraviewer.pvsm
 
 1) launch paraview
 2) use the 'load state' option
@@ -70,16 +47,7 @@ You may also use the predefined paraview state file found at:
 
 There are example scripts with sensible defaults available at:
 
-$ $SP4EHW_ROOT/hw3/ex_inputs/
+$ $HW3/ex_inputs/
 
 ./gen_highresolution_radial.sh generates a high resolution (128) NxN grid of radial heat
 ./run_particles.sh runs a high resolution input file
-
-
-# How is the boundary condition applied?
-Currently we have a very simple hard-coded manner of applying the boundary conditions.
-In the routine "ComputeTemperature::updateParticleTemperatures" we manually set the temperature
-for any particles that happen to lay at the boundary.
-There is a private variable set_bordertemp_zero that can be set to false to disable this behaviour
-The public function ComputeTemperature::setBorderTempFlag(bool flag) can be used after the
-Computetemperature object is constructed to manipulate the flag.
