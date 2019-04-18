@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python
 
 import sys
 import argparse
@@ -16,7 +16,7 @@ parser.add_argument('freq', type=int,
 parser.add_argument('filename', type=str,
                     help='start/input filename')
 parser.add_argument('particle_type', type=str,
-                    help='particle type')
+                    help='particle type (ping_pong or planet)')
 parser.add_argument('timestep', type=float,
                     help='timestep')
 

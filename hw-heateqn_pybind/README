@@ -16,11 +16,11 @@ $ ./test_heat_equation
 $ ./test_kepler
 $ pytest ./test_pybind.py
 
-You may then the main.py code to run the heat simulation:
+You may then run the main.py (from the build dir) to run the heat simulation:
 
 $ mkdir dumps
-$ main.py NSTEPS FREQ FILENAME PARTICLE_TYPE TIMESTEP
+$ python main.py NSTEPS FREQ INPUT_FILE PARTICLE_TYPE TIMESTEP
 
 A sample input file 'sample_input.txt' can be found in hw4/src
-New inputs can be generated with the 'generate_heatequation.py' script
+the output will be created in the $HW4/build/dump directory
 
