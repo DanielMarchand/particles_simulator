@@ -33,6 +33,10 @@ Simulates a heat transfer equation making use of FFTW3.
 # hw4-heateqn_pybind
 Similar to hw3 but with a pybind interface
 
+# hw5-bouncing_particles
+Example of the particles code used for bouncing pingpong balls
+![bounce_ex](https://github.com/DanielMarchand/particles_simulator/blob/master/ex_animations/bounce.gif)
+
 # Authors
 Daniel Marchand (daniel.marchand@epfl.ch)
 Ali Falsafi (ali.falsafi@epfl.ch)
