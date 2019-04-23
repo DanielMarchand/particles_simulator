@@ -1,0 +1,32 @@
+# Basic usage and installation:
+
+Ensure that both google test is installed
+
+$ cd $SP4EHW_ROOT/hw3/src
+
+$ mkdir build && cd build && ccmake ..
+$ make
+The message 'CMake produced the following output /usr/lib/libgtest.a' may appear. This is normal.
+
+Confirm proper installation by running the test:
+
+$ ./test_pingpong
+
+To generate a set of initial data a python script 'generate_input.py' is provided
+As well as a demo 'sample_input.txt' text input
+
+To run the code execute the following:
+
+$ mkdir dumps
+$ $HW3/src/build/particles <n timesteps> <dump freq> <input file> ping_pong 0.01
+
+
+To visualize the output run the following steps:
+(A basic familiarity with paraview is assumed)
+
+1) Launch paraview (tested on 5.4.1)
+2) open $MYDIR/dumps/steps-..csv
+3) Remove the ',' field delimeter and deselect 'Have Headers'
+4) Add the filter 'Table to Points'
+5) Make the X Column Field 0, Y column Field 1, and Z column Field 2
+6) Add the Glyph filter change the glyph type to 'sphere' and the radius to 1
